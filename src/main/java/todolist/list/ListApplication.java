@@ -10,6 +10,4 @@ public class ListApplication {
     public static void main(String[] args) {
         SpringApplication.run(ListApplication.class, args);
     }
-
-
 }
