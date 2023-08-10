@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "list_primary")
+@Table(schema = "taskPrimary")
 public class ListSecondary implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public class ListSecondary implements Serializable {
     @Column(length = 300)
     protected String describe;
 
-    @OneToMany(mappedBy = "list_primary")
+    @OneToMany(mappedBy = "taskPrimary")
     protected UUID listSuper;
 
 }
