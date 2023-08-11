@@ -7,6 +7,7 @@ import listener.ListenerDate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,18 +25,14 @@ public class UserModel extends ListenerDate implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
 
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+    protected List<ListPrimary> name;
+
     @Column(length = 50)
     protected String user;
+
     @Column(length = 100)
     protected String email;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getUser() {
         return user;

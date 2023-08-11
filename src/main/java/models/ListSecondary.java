@@ -6,28 +6,27 @@ import listener.ListenerDate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "taskPrimary")
 public class ListSecondary extends ListenerDate implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected UUID id;
-    @Column(nullable = true)
+    private UUID id;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     protected LocalDateTime dataCreate;
 
-    @Column(nullable = true)
     protected LocalDateTime dataUpdate;
     @Column(nullable = false, length = 50)
     protected String title;
-    @Column(nullable = true, length = 300)
-    protected String describe;
+    @Column(length = 300)
+    protected String describe_task;
 
-    @OneToMany(mappedBy = "taskPrimary")
-    protected UUID listSuper;
 
     public UUID getId() {
         return id;
@@ -45,19 +44,12 @@ public class ListSecondary extends ListenerDate implements Serializable {
         this.title = title;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescribe_task() {
+        return describe_task;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescribe_task(String describe) {
+        this.describe_task = describe;
     }
 
-    public UUID getListSuper() {
-        return listSuper;
-    }
-
-    public void setListSuper(UUID listSuper) {
-        this.listSuper = listSuper;
-    }
 }
