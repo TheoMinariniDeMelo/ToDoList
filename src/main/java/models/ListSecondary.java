@@ -24,9 +24,11 @@ public class ListSecondary extends ListenerDate implements Serializable {
     @Column(length = 300)
     protected String describe_task;
 
-    @Column(length = 32, nullable = false)
-    protected UUID task_id;
+    @Column(length = 32, nullable = false, insertable = false, updatable = false)
+    private UUID task_id;
 
+    @ManyToOne
+    protected ListPrimary task;
 
     public UUID getId() {
         return id;
@@ -34,6 +36,14 @@ public class ListSecondary extends ListenerDate implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getTask_id() {
+        return task_id;
+    }
+
+    public void setTask_id(UUID task_id) {
+        this.task_id = task_id;
     }
 
     public String getTitle() {

@@ -23,6 +23,8 @@ import java.util.UUID;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping(method = RequestMethod.GET)
 public class GetMappingController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class GetMappingController {
     ListSecondaryRepository listSecondaryRepository;
 
     @GetMapping("/users")
-    public ResponseEntity getUserController(
+    public ResponseEntity<Object> getUserController(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int offset) {
 
@@ -42,10 +44,10 @@ public class GetMappingController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity getUserIdController(@PathVariable UUID id) {
+    public ResponseEntity<Object> getUserIdController(@PathVariable UUID id) {
         try {
             var user = Optional.of(userRepository.findById(id));
-           return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
@@ -60,7 +62,7 @@ public class GetMappingController {
     }
 
     @GetMapping("/tasks/{id}")
-    public ResponseEntity getTaskById(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") UUID id) {
         try {
             var user = Optional.of(listPrimaryRepository.findById(id));
             return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
@@ -70,14 +72,14 @@ public class GetMappingController {
     }
 
     @GetMapping("/tasks/subtasks")
-    public ResponseEntity getSubTaskController(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int offset) {
+    public ResponseEntity<Object> getSubTaskController(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int offset) {
         PageRequest pageRequest = PageRequest.of(page, offset);
         return ResponseEntity.status(HttpStatus.OK).body(listSecondaryRepository.findAll(pageRequest));
     }
 
     @GetMapping("/tasks/subtasks/{id}")
-    public ResponseEntity getSubTaskIdController(@PathVariable("Id") UUID id) {
+    public ResponseEntity<Object> getSubTaskIdController(@PathVariable("Id") UUID id) {
         try {
             var user = Optional.of(listSecondaryRepository.findById(id));
             return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());

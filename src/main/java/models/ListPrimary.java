@@ -7,6 +7,7 @@ import listener.ListenerDate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -15,18 +16,30 @@ import java.util.UUID;
 public class ListPrimary extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected UUID id;
+    private UUID id;
 
     @Column(nullable = false, length = 50)
-    protected String title;
-    @Column(nullable = true, length = 300)
-    protected String describe_task;
+    private String title;
+
+    @Column(length = 300)
+    private String describe_task;
 
     @Column(nullable = false, length = 32)
-    protected UUID user_id;
+    private UUID user_id;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<ListSecondary> subtasks;
+
+    // Getters and setters
+    public List<ListSecondary> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(List<ListSecondary> subtasks) {
+        this.subtasks = subtasks;
+    }
 
     public UUID getUser_id() {
         return user_id;

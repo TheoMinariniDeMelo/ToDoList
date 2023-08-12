@@ -31,6 +31,10 @@ public class UserModel extends ListenerDate implements Serializable {
     @Column(length = 100)
     protected String email;
 
+    public UUID getId() {
+        return id;
+    }
+
     public String getUser() {
         return user;
     }

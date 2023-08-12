@@ -4,20 +4,15 @@ import jakarta.transaction.Transactional;
 import models.ListPrimary;
 import models.ListSecondary;
 import models.UserModel;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping(method = RequestMethod.DELETE)
 public class DeleteMappingController {
-
-
     @Transactional
     @DeleteMapping("/users")
     public void deleteUserController(@RequestBody UserModel user) {
-
     }
 
     @Transactional
