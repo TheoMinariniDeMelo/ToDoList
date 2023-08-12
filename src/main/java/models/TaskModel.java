@@ -40,11 +40,11 @@ public class TaskModel extends ListenerDate implements Serializable {
         this.subtasks = subtasks;
     }
 
-    public UUID getUser_id() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUser_id(UUID user_id) {
+    public void setUserId(UUID user_id) {
         this.userId = user_id;
     }
 
@@ -52,23 +52,19 @@ public class TaskModel extends ListenerDate implements Serializable {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    public void setId(UUID id) {this.id = id;}
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getDescribe_task() {
+    public String getTaskDescription() {
         return taskDescription;
     }
 
-    public void setDescribe_task(String describe_task) {
+    public void setTaskDescription(String describe_task) {
         this.taskDescription = describe_task;
     }
 }

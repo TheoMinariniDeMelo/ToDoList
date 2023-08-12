@@ -1,8 +1,6 @@
 package controllers;
 
-
 import models.TaskModel;
-
 import models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +16,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(method = RequestMethod.GET)
@@ -30,6 +27,10 @@ public class GetMappingController {
     SubTaskRepository subTaskRepository;
     @Autowired
     UserRepository userRepository;
+
+    private ResponseEntity<Object> createErrorResponse(String message) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + message);
+    }
 
     @GetMapping("/users")
     public ResponseEntity<Object> getUserController(
@@ -52,8 +53,10 @@ public class GetMappingController {
 
     @GetMapping("/tasks")
     public ResponseEntity
-            <Page<TaskModel>> getPage(@RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "10") int offset) {
+            <Page<TaskModel>> getPage(
+                    @RequestParam(defaultValue = "0") int page,
+                    @RequestParam(defaultValue = "10") int offset
+    ) {
         PageRequest pageRequest = PageRequest.of(page, offset);
         return ResponseEntity.status(HttpStatus.OK).body(taskRepository.findAll(pageRequest));
     }
@@ -69,8 +72,10 @@ public class GetMappingController {
     }
 
     @GetMapping("/tasks/subtasks")
-    public ResponseEntity<Object> getSubTaskController(@RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int offset) {
+    public ResponseEntity<Object> getSubTaskController(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int offset
+    ) {
         PageRequest pageRequest = PageRequest.of(page, offset);
         return ResponseEntity.status(HttpStatus.OK).body(subTaskRepository.findAll(pageRequest));
     }
@@ -84,5 +89,4 @@ public class GetMappingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
     }
-
 }

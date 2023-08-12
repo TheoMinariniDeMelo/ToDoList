@@ -3,7 +3,7 @@ package controllers;
 import dto.TaskDTO;
 import dto.SubTaskDTO;
 import dto.UserDTO;
-import exceptions.ErrorPersistenceException;
+import exceptions.PersistenceException;
 import jakarta.validation.Valid;
 import models.TaskModel;
 import models.SubTaskModel;
@@ -37,7 +37,7 @@ public class PostMappingController {
         try {
             boolean emailExists = Objects.isNull(userRepository.findByEmail(user.getEmail()));
             if (!emailExists){
-                throw new ErrorPersistenceException("The User already exist");
+                throw new PersistenceException("The User already exist");
             }
 
             BeanUtils.copyProperties(userDto, user);
@@ -47,6 +47,8 @@ public class PostMappingController {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body(error.getMessage() + " /Error, not possible persistence data");
+        } catch (PersistenceException error) {
+            throw new RuntimeException(error);
         }
     }
 
@@ -56,7 +58,7 @@ public class PostMappingController {
         try {
             boolean userExists = userRepository.existsById(taskDto.userId());
             if (!userExists){
-                throw new ErrorPersistenceException("The User not exist");
+                throw new PersistenceException("The User not exist");
             }
 
             BeanUtils.copyProperties(taskDto, task);
@@ -66,7 +68,9 @@ public class PostMappingController {
         } catch (RuntimeException error) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(error.getMessage() + "Error, not possible persistence data");
+                    .body(error.getMessage() + "Error: not possible persistence data");
+        } catch (PersistenceException error) {
+            throw new RuntimeException(error);
         }
     }
 
@@ -78,7 +82,7 @@ public class PostMappingController {
             boolean taskExists = userRepository.existsById(subTaskDto.taskId());
 
             if (taskExists){
-                throw new ErrorPersistenceException("The task not exist");
+                throw new PersistenceException("The task not exist");
             }
 
             BeanUtils.copyProperties(subTaskDto, subTask);
@@ -88,7 +92,9 @@ public class PostMappingController {
         } catch (RuntimeException error) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(error.getMessage() + "Error, not possible persistence data");
+                    .body(error.getMessage() + "Error: not possible persistence data");
+        } catch (PersistenceException error) {
+            throw new RuntimeException(error);
         }
     }
 }
