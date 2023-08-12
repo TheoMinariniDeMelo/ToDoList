@@ -10,22 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(method = RequestMethod.PUT)
 public class PutMappingController {
-
     @Transactional
     @PutMapping("/users")
-    public void putUserController(@RequestBody UserModel user) {
-
-    }
+    public void putUserController(@RequestBody UserModel user) {}
 
     @Transactional
     @PutMapping("/tasks")
-    public void putTaskController(@RequestBody ListPrimary task) {
-
-    }
+    public void putTaskController(@RequestBody ListPrimary task) {}
 
     @Transactional
     @PutMapping("/subtasks")
-    public void putSubTaskController(@RequestBody ListSecondary subTask) {
-
-    }
+    public void putSubTaskController(@RequestBody ListSecondary subTask) {}
 }

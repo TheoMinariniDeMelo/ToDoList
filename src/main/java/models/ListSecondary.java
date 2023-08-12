@@ -18,7 +18,6 @@ public class ListSecondary extends ListenerDate implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
     @Column(nullable = false, length = 50)
     protected String title;
     @Column(length = 300)
