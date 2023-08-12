@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "taskPrimary")
+@Table(schema = "list_secondary")
 public class ListSecondary extends ListenerDate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
