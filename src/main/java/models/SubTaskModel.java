@@ -5,13 +5,11 @@ import listener.ListenerDate;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "list_secondary")
-public class ListSecondary extends ListenerDate implements Serializable {
+@Table(schema = "SubTask")
+public class SubTaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -21,13 +19,13 @@ public class ListSecondary extends ListenerDate implements Serializable {
     @Column(nullable = false, length = 50)
     protected String title;
     @Column(length = 300)
-    protected String describe_task;
+    protected String subTaskDescription;
 
     @Column(length = 32, nullable = false, insertable = false, updatable = false)
-    private UUID task_id;
+    private UUID taskId;
 
     @ManyToOne
-    protected ListPrimary task;
+    protected TaskModel task;
 
     public UUID getId() {
         return id;
@@ -38,11 +36,11 @@ public class ListSecondary extends ListenerDate implements Serializable {
     }
 
     public UUID getTask_id() {
-        return task_id;
+        return taskId;
     }
 
     public void setTask_id(UUID task_id) {
-        this.task_id = task_id;
+        this.taskId = task_id;
     }
 
     public String getTitle() {
@@ -54,10 +52,10 @@ public class ListSecondary extends ListenerDate implements Serializable {
     }
 
     public String getDescribe_task() {
-        return describe_task;
+        return subTaskDescription;
     }
 
     public void setDescribe_task(String describe) {
-        this.describe_task = describe;
+        this.subTaskDescription = describe;
     }
 }

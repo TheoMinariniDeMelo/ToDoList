@@ -6,12 +6,10 @@ import listener.ListenerDate;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "users")
+@Table(schema = "User")
 
 public class UserModel extends ListenerDate implements Serializable {
     @Serial

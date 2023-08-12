@@ -1,8 +1,8 @@
 package controllers;
 
 import jakarta.transaction.Transactional;
-import models.ListPrimary;
-import models.ListSecondary;
+import models.TaskModel;
+import models.SubTaskModel;
 import models.UserModel;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,13 @@ public class DeleteMappingController {
 
     @Transactional
     @DeleteMapping("/tasks")
-    public void deleteTaskController(@RequestBody ListPrimary task) {
+    public void deleteTaskController(@RequestBody TaskModel task) {
 
     }
 
     @Transactional
     @DeleteMapping("/tasks/subtasks")
-    public void deleteSubTaskController(@RequestBody ListSecondary subTask) {
+    public void deleteSubTaskController(@RequestBody SubTaskModel subTask) {
 
     }
 }

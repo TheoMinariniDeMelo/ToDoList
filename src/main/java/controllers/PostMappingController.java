@@ -1,20 +1,20 @@
 package controllers;
 
-import dto.ListPrimaryDto;
-import dto.ListSecondaryDto;
-import dto.UserModelDto;
+import dto.TaskDTO;
+import dto.SubTaskDTO;
+import dto.UserDTO;
 import exceptions.ErrorPersistenceException;
 import jakarta.validation.Valid;
-import models.ListPrimary;
-import models.ListSecondary;
+import models.TaskModel;
+import models.SubTaskModel;
 import models.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import repositories.ListPrimaryRepository;
-import repositories.ListSecondaryRepository;
+import repositories.TaskRepository;
+import repositories.SubTaskRepository;
 import repositories.UserRepository;
 
 import java.util.Objects;
@@ -25,14 +25,14 @@ import java.util.Objects;
 public class PostMappingController {
 
     @Autowired
-    ListPrimaryRepository listPrimaryRepository;
-    @Autowired
     UserRepository userRepository;
     @Autowired
-    ListSecondaryRepository listSecondaryRepository;
+    TaskRepository taskRepository;
+    @Autowired
+    SubTaskRepository subTaskRepository;
 
     @PostMapping("/users")
-    public ResponseEntity<Object> postUserController(@RequestBody @Valid UserModelDto userDto) {
+    public ResponseEntity<Object> postUserController(@RequestBody @Valid UserDTO userDto) {
         UserModel user = new UserModel();
         try {
             boolean emailExists = Objects.isNull(userRepository.findByEmail(user.getEmail()));
@@ -51,10 +51,10 @@ public class PostMappingController {
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<Object> postTaskController(@RequestBody @Valid ListPrimaryDto taskDto) {
-        ListPrimary task = new ListPrimary();
+    public ResponseEntity<Object> postTaskController(@RequestBody @Valid TaskDTO taskDto) {
+        TaskModel task = new TaskModel();
         try {
-            boolean userExists = userRepository.existsById(taskDto.user_id());
+            boolean userExists = userRepository.existsById(taskDto.userId());
             if (!userExists){
                 throw new ErrorPersistenceException("The User not exist");
             }
@@ -62,7 +62,7 @@ public class PostMappingController {
             BeanUtils.copyProperties(taskDto, task);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(listPrimaryRepository.save(task));
+                    .body(taskRepository.save(task));
         } catch (RuntimeException error) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -72,10 +72,10 @@ public class PostMappingController {
 
 
     @PostMapping("/subtasks")
-    public ResponseEntity<Object> postSubTaskController(@RequestBody @Valid ListSecondaryDto subTaskDto) {
-        ListSecondary subTask = new ListSecondary();
+    public ResponseEntity<Object> postSubTaskController(@RequestBody @Valid SubTaskDTO subTaskDto) {
+        SubTaskModel subTask = new SubTaskModel();
         try {
-            boolean taskExists = userRepository.existsById(subTaskDto.task_id());
+            boolean taskExists = userRepository.existsById(subTaskDto.taskId());
 
             if (taskExists){
                 throw new ErrorPersistenceException("The task not exist");
@@ -84,7 +84,7 @@ public class PostMappingController {
             BeanUtils.copyProperties(subTaskDto, subTask);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(listSecondaryRepository.save(subTask));
+                    .body(subTaskRepository.save(subTask));
         } catch (RuntimeException error) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)

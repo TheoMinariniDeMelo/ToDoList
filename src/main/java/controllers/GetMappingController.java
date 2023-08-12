@@ -1,7 +1,7 @@
 package controllers;
 
 
-import models.ListPrimary;
+import models.TaskModel;
 
 import models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import models.ListSecondary;
 import org.springframework.web.bind.annotation.GetMapping;
-import repositories.ListPrimaryRepository;
-import repositories.ListSecondaryRepository;
+import repositories.TaskRepository;
+import repositories.SubTaskRepository;
 import repositories.UserRepository;
-/*import repositories.ListPrimaryRepository;*/
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,11 +25,11 @@ import java.util.UUID;
 public class GetMappingController {
 
     @Autowired
-    ListPrimaryRepository listPrimaryRepository;
+    TaskRepository taskRepository;
+    @Autowired
+    SubTaskRepository subTaskRepository;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    ListSecondaryRepository listSecondaryRepository;
 
     @GetMapping("/users")
     public ResponseEntity<Object> getUserController(
@@ -46,8 +43,8 @@ public class GetMappingController {
     @GetMapping("/users/{id}")
     public ResponseEntity<Object> getUserIdController(@PathVariable UUID id) {
         try {
-            var user = Optional.of(userRepository.findById(id));
-            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+            UserModel user = userRepository.findById(id).orElseThrow();
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (NoSuchElementException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
@@ -55,16 +52,16 @@ public class GetMappingController {
 
     @GetMapping("/tasks")
     public ResponseEntity
-            <Page<ListPrimary>> getPage(@RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int offset) {
+            <Page<TaskModel>> getPage(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int offset) {
         PageRequest pageRequest = PageRequest.of(page, offset);
-        return ResponseEntity.status(HttpStatus.OK).body(listPrimaryRepository.findAll(pageRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(taskRepository.findAll(pageRequest));
     }
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") UUID id) {
         try {
-            var user = Optional.of(listPrimaryRepository.findById(id));
+            var user = Optional.of(taskRepository.findById(id));
             return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
@@ -75,13 +72,13 @@ public class GetMappingController {
     public ResponseEntity<Object> getSubTaskController(@RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") int offset) {
         PageRequest pageRequest = PageRequest.of(page, offset);
-        return ResponseEntity.status(HttpStatus.OK).body(listSecondaryRepository.findAll(pageRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(subTaskRepository.findAll(pageRequest));
     }
 
     @GetMapping("/tasks/subtasks/{id}")
-    public ResponseEntity<Object> getSubTaskIdController(@PathVariable("Id") UUID id) {
+    public ResponseEntity<Object> getSubTaskIdController(@PathVariable("id") UUID id) {
         try {
-            var user = Optional.of(listSecondaryRepository.findById(id));
+            var user = Optional.of(subTaskRepository.findById(id));
             return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");

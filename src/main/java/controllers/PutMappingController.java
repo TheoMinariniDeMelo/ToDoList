@@ -1,8 +1,8 @@
 package controllers;
 
 import jakarta.transaction.Transactional;
-import models.ListPrimary;
-import models.ListSecondary;
+import models.TaskModel;
+import models.SubTaskModel;
 import models.UserModel;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +16,9 @@ public class PutMappingController {
 
     @Transactional
     @PutMapping("/tasks")
-    public void putTaskController(@RequestBody ListPrimary task) {}
+    public void putTaskController(@RequestBody TaskModel task) {}
 
     @Transactional
     @PutMapping("/subtasks")
-    public void putSubTaskController(@RequestBody ListSecondary subTask) {}
+    public void putSubTaskController(@RequestBody SubTaskModel subTask) {}
 }

@@ -11,8 +11,8 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "list_primary")
-public class ListPrimary extends ListenerDate implements Serializable {
+@Table(name = "Task")
+public class TaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -23,29 +23,29 @@ public class ListPrimary extends ListenerDate implements Serializable {
     private String title;
 
     @Column(length = 300)
-    private String describe_task;
+    private String taskDescription;
 
     @Column(nullable = false, length = 32)
-    private UUID user_id;
+    private UUID userId;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<ListSecondary> subtasks;
+    private List<SubTaskModel> subtasks;
 
     // Getters and setters
-    public List<ListSecondary> getSubtasks() {
+    public List<SubTaskModel> getSubtasks() {
         return subtasks;
     }
 
-    public void setSubtasks(List<ListSecondary> subtasks) {
+    public void setSubtasks(List<SubTaskModel> subtasks) {
         this.subtasks = subtasks;
     }
 
     public UUID getUser_id() {
-        return user_id;
+        return userId;
     }
 
     public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+        this.userId = user_id;
     }
 
     public UUID getId() {
@@ -65,10 +65,10 @@ public class ListPrimary extends ListenerDate implements Serializable {
     }
 
     public String getDescribe_task() {
-        return describe_task;
+        return taskDescription;
     }
 
     public void setDescribe_task(String describe_task) {
-        this.describe_task = describe_task;
+        this.taskDescription = describe_task;
     }
 }
