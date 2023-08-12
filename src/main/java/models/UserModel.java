@@ -16,11 +16,7 @@ import java.util.UUID;
 public class UserModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    @Column(nullable = true)
-    protected LocalDateTime dataCreate;
 
-    @Column(nullable = true)
-    protected LocalDateTime dataUpdate;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
@@ -28,8 +24,6 @@ public class UserModel extends ListenerDate implements Serializable {
     @Column(length = 32)
     protected String password;
 
-    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
-    protected List<ListPrimary> name;
 
     @Column(length = 50)
     protected String user;

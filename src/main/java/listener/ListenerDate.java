@@ -17,8 +17,6 @@ public abstract class ListenerDate {
     @LastModifiedDate
     private LocalDateTime dataUpdate;
 
-    // getters e setters
-
     public LocalDateTime getDataCreate() {
         return dataCreate;
     }

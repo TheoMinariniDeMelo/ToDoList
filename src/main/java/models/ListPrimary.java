@@ -2,6 +2,7 @@ package models;
 
 
 import jakarta.persistence.*;
+import listener.ListenerDate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "list_primary")
-public class ListPrimary implements Serializable {
+public class ListPrimary extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -19,26 +20,19 @@ public class ListPrimary implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
 
-    @Column(nullable = true)
-    protected LocalDateTime dataCreate;
-
-    @Column(nullable = true)
-    protected LocalDateTime dataUpdate;
-
     @Column(nullable = false, length = 50)
     protected String title;
     @Column(nullable = true, length = 300)
     protected String describe_task;
 
-    @ManyToOne()
-    @JoinColumn()
-    protected UserModel user_id;
+    @Column(nullable = false, length = 32)
+    protected UUID user_id;
 
-    public UserModel getUser_id() {
+    public UUID getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(UserModel user_id) {
+    public void setUser_id(UUID user_id) {
         this.user_id = user_id;
     }
 
@@ -48,22 +42,6 @@ public class ListPrimary implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public LocalDateTime getDataCreate() {
-        return dataCreate;
-    }
-
-    public void setDataCreate(LocalDateTime dataCreate) {
-        this.dataCreate = dataCreate;
-    }
-
-    public LocalDateTime getDataUpdate() {
-        return dataUpdate;
-    }
-
-    public void setDataUpdate(LocalDateTime dataUpdate) {
-        this.dataUpdate = dataUpdate;
     }
 
     public String getTitle() {

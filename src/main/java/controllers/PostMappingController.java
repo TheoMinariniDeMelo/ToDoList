@@ -15,13 +15,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import repositories.ListPrimaryRepository;
 import repositories.ListSecondaryRepository;
 import repositories.UserRepository;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -34,37 +34,41 @@ public class PostMappingController {
     @Autowired
     ListSecondaryRepository listSecondaryRepository;
 
-
     @PostMapping("/users")
-    public void postUserController(@RequestBody @Valid UserModelDto userDto) {
+    public ResponseEntity postUserController(@RequestBody @Valid UserModelDto userDto) {
         UserModel user = new UserModel();
         try {
+            if (!Objects.isNull(userRepository.findByEmail(user.getEmail())))
+                throw new RuntimeException("The User already exist");
             BeanUtils.copyProperties(userDto, user);
-            ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
+            return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
         } catch (RuntimeException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
         }
     }
 
-    @PostMapping("/tasks")
-    public void postTaskController(@RequestBody @Valid ListPrimaryDto taskDto) {
+    @PostMapping("/tasks/{id}")
+    public ResponseEntity postTaskController(@PathVariable(value = "id") UUID id, @RequestBody @Valid ListPrimaryDto taskDto) {
         ListPrimary task = new ListPrimary();
+
         try {
+            if (listPrimaryRepository.findById(id).isEmpty()) throw new RuntimeException("The User not exist");
             BeanUtils.copyProperties(taskDto, task);
-            ResponseEntity.status(HttpStatus.CREATED).body(listPrimaryRepository.save(task));
+            return ResponseEntity.status(HttpStatus.CREATED).body(listPrimaryRepository.save(task));
         } catch (RuntimeException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
         }
     }
 
-    @PostMapping("/subtasks")
-    public void postSubTaskController(@RequestBody @Valid ListSecondaryDto subTaskDto) {
+    @PostMapping("/subtasks/{id}")
+    public ResponseEntity postSubTaskController(@PathVariable(value = "id") UUID id, @RequestBody @Valid ListSecondaryDto subTaskDto) {
         ListSecondary subTask = new ListSecondary();
         try {
+            if (listSecondaryRepository.findById(id).isEmpty()) throw new RuntimeException("The task not exist");
             BeanUtils.copyProperties(subTaskDto, subTask);
-            ResponseEntity.status(HttpStatus.CREATED).body(listSecondaryRepository.save(subTask));
+          return ResponseEntity.status(HttpStatus.CREATED).body(listSecondaryRepository.save(subTask));
         } catch (RuntimeException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, not possible persistence data");
         }
     }
 }
