@@ -25,6 +25,9 @@ public class UserModel extends ListenerDate implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
 
+    @Column(length = 32)
+    protected String password;
+
     @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
     protected List<ListPrimary> name;
 
@@ -48,5 +51,13 @@ public class UserModel extends ListenerDate implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

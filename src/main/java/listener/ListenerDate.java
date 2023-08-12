@@ -18,4 +18,20 @@ public abstract class ListenerDate {
     private LocalDateTime dataUpdate;
 
     // getters e setters
+
+    public LocalDateTime getDataCreate() {
+        return dataCreate;
+    }
+
+    public void setDataCreate(LocalDateTime dataCreate) {
+        this.dataCreate = dataCreate;
+    }
+
+    public LocalDateTime getDataUpdate() {
+        return dataUpdate;
+    }
+
+    public void setDataUpdate(LocalDateTime dataUpdate) {
+        this.dataUpdate = dataUpdate;
+    }
 }
