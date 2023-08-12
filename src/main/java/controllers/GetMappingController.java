@@ -23,6 +23,8 @@ import java.util.UUID;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping(method = RequestMethod.GET)
 public class GetMappingController {
 
     @Autowired
@@ -32,26 +34,22 @@ public class GetMappingController {
     @Autowired
     ListSecondaryRepository listSecondaryRepository;
 
-
-    @GetMapping()
-    public void all() {
-
-    }
-
     @GetMapping("/users")
-    public void getUserController(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int offset) {
+    public ResponseEntity<Object> getUserController(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int offset) {
+
         PageRequest pages = PageRequest.of(page, offset);
-        ResponseEntity.status(HttpStatus.OK).body(userRepository.findAll(pages));
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.findAll(pages));
     }
 
     @GetMapping("/users/{id}")
-    public void getUserIdController(@PathVariable UUID id) {
+    public ResponseEntity<Object> getUserIdController(@PathVariable UUID id) {
         try {
             var user = Optional.of(userRepository.findById(id));
-            ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
     }
 
@@ -64,29 +62,29 @@ public class GetMappingController {
     }
 
     @GetMapping("/tasks/{id}")
-    public void getTaskById(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") UUID id) {
         try {
             var user = Optional.of(listPrimaryRepository.findById(id));
-            ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
     }
 
     @GetMapping("/tasks/subtasks")
-    public void getSubTaskController(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int offset) {
+    public ResponseEntity<Object> getSubTaskController(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int offset) {
         PageRequest pageRequest = PageRequest.of(page, offset);
-        ResponseEntity.status(HttpStatus.OK).body(listSecondaryRepository.findAll(pageRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(listSecondaryRepository.findAll(pageRequest));
     }
 
     @GetMapping("/tasks/subtasks/{id}")
-    public void getSubTaskIdController(@PathVariable("Id") UUID id) {
+    public ResponseEntity<Object> getSubTaskIdController(@PathVariable("Id") UUID id) {
         try {
             var user = Optional.of(listSecondaryRepository.findById(id));
-            ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
         } catch (NoSuchElementException error) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: not possible found user on id provided");
         }
     }
 
