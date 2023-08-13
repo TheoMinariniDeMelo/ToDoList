@@ -24,7 +24,7 @@ public class SubTaskModel extends ListenerDate implements Serializable {
     @Column(length = 32, nullable = false, insertable = false, updatable = false)
     private UUID taskId;
 
-    @ManyToOne
+    @ManyToOne()
     protected TaskModel task;
 
     public UUID getId() {
