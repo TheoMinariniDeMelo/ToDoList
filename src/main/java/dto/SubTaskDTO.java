@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record SubTaskDTO(
-        @NotBlank String describe_task,
+        @NotBlank String subTaskDescription,
         @NotNull String title,
         @NotBlank UUID taskId,
         @NotBlank LocalDateTime dataCreate,

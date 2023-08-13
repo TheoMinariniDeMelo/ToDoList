@@ -18,29 +18,15 @@ public class SubTaskModel extends ListenerDate implements Serializable {
 
     @Column(nullable = false, length = 50)
     protected String title;
+
     @Column(length = 300)
     protected String subTaskDescription;
-
-    @Column(length = 32, nullable = false, insertable = false, updatable = false)
+    @Column(length = 36, nullable = false, insertable = false, updatable = false)
     private UUID taskId;
 
-    @ManyToOne
-    protected TaskModel task;
 
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(UUID task_id) {
-        this.taskId = task_id;
     }
 
     public String getTitle() {
@@ -55,7 +41,16 @@ public class SubTaskModel extends ListenerDate implements Serializable {
         return subTaskDescription;
     }
 
-    public void setSubTaskDescription(String describe) {
-        this.subTaskDescription = describe;
+    public void setSubTaskDescription(String subTaskDescription) {
+        this.subTaskDescription = subTaskDescription;
     }
+
+    public UUID getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(UUID taskId) {
+        this.taskId = taskId;
+    }
+
 }
