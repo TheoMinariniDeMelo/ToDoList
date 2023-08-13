@@ -25,20 +25,12 @@ public class TaskModel extends ListenerDate implements Serializable {
     @Column(length = 300)
     private String taskDescription;
 
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 36)
     private UUID userId;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<SubTaskModel> subtasks;
+
 
     // Getters and setters
-    public List<SubTaskModel> getSubtasks() {
-        return subtasks;
-    }
-
-    public void setSubtasks(List<SubTaskModel> subtasks) {
-        this.subtasks = subtasks;
-    }
 
     public UUID getUserId() {
         return userId;

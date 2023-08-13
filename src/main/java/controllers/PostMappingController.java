@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import models.TaskModel;
 import models.SubTaskModel;
 import models.UserModel;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,19 +37,16 @@ public class PostMappingController {
         UserModel user = new UserModel();
         try {
             boolean emailExists = Objects.isNull(userRepository.findByEmail(user.getEmail()));
-            if (!emailExists){
+            if (!emailExists) {
                 throw new PersistenceException("The User already exist");
             }
-
             BeanUtils.copyProperties(userDto, user);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
-        } catch (RuntimeException error) {
+        } catch (PersistenceException error) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body(error.getMessage() + " /Error, not possible persistence data");
-        } catch (PersistenceException error) {
-            throw new RuntimeException(error);
         }
     }
 
@@ -56,21 +54,12 @@ public class PostMappingController {
     public ResponseEntity<Object> postTaskController(@RequestBody @Valid TaskDTO taskDto) {
         TaskModel task = new TaskModel();
         try {
-            boolean userExists = userRepository.existsById(taskDto.userId());
-            if (!userExists){
+            if (userRepository.findById(taskDto.userId()).isEmpty())
                 throw new PersistenceException("The User not exist");
-            }
-
             BeanUtils.copyProperties(taskDto, task);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(taskRepository.save(task));
-        } catch (RuntimeException error) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(error.getMessage() + "Error: not possible persistence data");
+            return ResponseEntity.status(HttpStatus.CREATED).body(taskRepository.save(task));
         } catch (PersistenceException error) {
-            throw new RuntimeException(error);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
         }
     }
 
@@ -79,22 +68,15 @@ public class PostMappingController {
     public ResponseEntity<Object> postSubTaskController(@RequestBody @Valid SubTaskDTO subTaskDto) {
         SubTaskModel subTask = new SubTaskModel();
         try {
-            boolean taskExists = userRepository.existsById(subTaskDto.taskId());
-
-            if (taskExists){
+            if (userRepository.findById(subTaskDto.taskId()).isEmpty())
                 throw new PersistenceException("The task not exist");
-            }
-
             BeanUtils.copyProperties(subTaskDto, subTask);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(subTaskRepository.save(subTask));
-        } catch (RuntimeException error) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(error.getMessage() + "Error: not possible persistence data");
         } catch (PersistenceException error) {
-            throw new RuntimeException(error);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error.getMessage() + "Error: not possible persistence data");
         }
     }
 }
