@@ -11,7 +11,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "Task")
+@Table(name = "task")
 public class TaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,6 @@ public class TaskModel extends ListenerDate implements Serializable {
     private UUID userId;
 
 
-
     // Getters and setters
 
     public UUID getUserId() {
@@ -44,9 +43,13 @@ public class TaskModel extends ListenerDate implements Serializable {
         return id;
     }
 
-    public void setId(UUID id) {this.id = id;}
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    public String getTitle() {return title;}
+    public String getTitle() {
+        return title;
+    }
 
     public void setTitle(String title) {
         this.title = title;

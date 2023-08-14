@@ -12,6 +12,7 @@ import java.util.UUID;
 public class SubTaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -21,7 +22,9 @@ public class SubTaskModel extends ListenerDate implements Serializable {
 
     @Column(length = 300)
     protected String subTaskDescription;
-    @Column(length = 36, nullable = false, insertable = false, updatable = false)
+
+    @Column(length = 36, nullable = false)
+    @JoinColumn(name = "taskId")
     private UUID taskId;
 
 
