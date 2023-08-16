@@ -22,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(name = "/subtasks")
+@RequestMapping(path = "/subtasks")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class SubTask {
     @Autowired
@@ -30,7 +30,7 @@ public class SubTask {
     @Autowired
     Post post;
 
-    @PostMapping("/subtasks")
+    @PostMapping("")
     public ResponseEntity<Object> postSubTaskController(@RequestBody @Valid SubTaskDTO subTaskDto) {
         try {
             TaskModel task = get.findTaskById(subTaskDto.task())
@@ -49,7 +49,7 @@ public class SubTask {
         }
     }
 
-    @GetMapping("/subtasks/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getSubTaskById(@PathVariable(value = "id") UUID id) {
         try {
             SubTaskModel subtask = get.findSubTaskById(id).orElseThrow(() -> new NotFoundRequestException("Not found subtask"));

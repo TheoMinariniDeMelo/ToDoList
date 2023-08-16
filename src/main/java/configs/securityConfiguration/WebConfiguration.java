@@ -12,16 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 
 
-//@Configuration
+@Configuration
+@EnableWebSecurity
 public class WebConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(
                 authorizeConfig -> {
-                    authorizeConfig.anyRequest().authenticated();
-                    authorizeConfig.requestMatchers("/users").permitAll();
+                    authorizeConfig.anyRequest().permitAll();
                 }
-        ).formLogin(Customizer.withDefaults()).build();
+        ).formLogin(Customizer.withDefaults()).csrf(Customizer.withDefaults()).build();
     }
 }

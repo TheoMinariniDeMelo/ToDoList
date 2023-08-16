@@ -25,7 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping(name = "/user")
+@RequestMapping(path = "/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class User {
 
@@ -34,7 +34,7 @@ public class User {
     @Autowired
     Post post;
 
-    @PostMapping("/users")
+    @PostMapping("")
     public ResponseEntity<Object> postUserController(@RequestBody @Valid UserDTO userDto) {
         UserModel user = new UserModel();
         try {
@@ -52,7 +52,7 @@ public class User {
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public ResponseEntity<Object> getAllUsers() {
         List<UserModel> users = get.findAll();
         users.forEach(user -> user.add(linkTo(methodOn(User.class).getUserById(user.getId())).withSelfRel()));
@@ -60,8 +60,7 @@ public class User {
     }
 
 
-
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable(value = "id") UUID id) {
         try {
             UserModel user = Optional.of(get.findById(id)).orElseThrow(
@@ -75,7 +74,8 @@ public class User {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
         }
     }
-    @GetMapping("/users/{id}/tasks")
+
+    @GetMapping("/{id}/tasks")
     public ResponseEntity<Object> getTasksForUser(@PathVariable(value = "id") UUID id) {
         try {
             if (!get.existsById(id)) throw new NotFoundRequestException("User not found");
@@ -88,5 +88,4 @@ public class User {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
         }
     }
-
 }

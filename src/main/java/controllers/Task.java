@@ -25,7 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping(name = "/tasks")
+@RequestMapping(path = "/tasks")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class Task {
 
@@ -34,8 +34,8 @@ public class Task {
     @Autowired
     Get get;
 
-    @GetMapping("/tasks/{id}")
-    public ResponseEntity<Object> getTaskById(@PathVariable(value = "id") UUID id) {
+    @GetMapping("/{taskId}")
+    public ResponseEntity<Object> getTaskById(@PathVariable(value = "taskId") UUID id) {
         try {
             Optional<TaskModel> task = get.findTaskById(id);
             task.orElseThrow(() -> new NotFoundRequestException("Task not found with the provided id"));
@@ -46,13 +46,13 @@ public class Task {
         }
     }
 
-    @GetMapping("/tasks/{id}/subtasks")
+    @GetMapping("/{id}/subtasks")
     public ResponseEntity<Object> getSubTasksForTask(@PathVariable(value = "id") UUID id) {
         List<SubTaskModel> subtasks = get.findSubTaskByIdTask(id);
         if (subtasks.isEmpty()) return ResponseEntity.badRequest().body("Not found subtasks");
         return ResponseEntity.status(HttpStatus.OK).body(subtasks);
     }
-    @PostMapping("/tasks")
+    @PostMapping("")
     public ResponseEntity<Object> postTaskController(@RequestBody @Valid TaskDTO taskDto) {
         try {
             UserModel user = Optional.of(get.findById(taskDto.userId()))
