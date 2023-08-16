@@ -12,6 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskModel, UUID> {
-    @Query(value = "SELECT * FROM task WHERE user_id = :param", nativeQuery = true)
-    List<TaskModel> findByUserId(@Param("param") UUID userId);
+    List<TaskModel> findByUserId(UUID userId);
 }

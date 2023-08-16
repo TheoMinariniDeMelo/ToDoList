@@ -1,16 +1,23 @@
 package models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import listener.ListenerDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(schema = "User")
-
 public class UserModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,31 +36,7 @@ public class UserModel extends ListenerDate implements Serializable {
     @Column(length = 100)
     protected String email;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<TaskModel> tasks;
 }

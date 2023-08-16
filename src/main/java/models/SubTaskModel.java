@@ -2,21 +2,25 @@ package models;
 
 import jakarta.persistence.*;
 import listener.ListenerDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(schema = "SubTask")
 public class SubTaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+    protected UUID id;
     @Column(nullable = false, length = 50)
     protected String title;
 
@@ -27,35 +31,7 @@ public class SubTaskModel extends ListenerDate implements Serializable {
     @JoinColumn(name = "taskId")
     private UUID taskId;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "task")
     protected TaskModel task;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSubTaskDescription() {
-        return subTaskDescription;
-    }
-
-    public void setSubTaskDescription(String subTaskDescription) {
-        this.subTaskDescription = subTaskDescription;
-    }
-
-    public UUID getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(UUID taskId) {
-        this.taskId = taskId;
-    }
-
 }

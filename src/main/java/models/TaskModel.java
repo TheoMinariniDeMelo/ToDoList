@@ -1,8 +1,12 @@
 package models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import listener.ListenerDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +15,9 @@ import java.util.UUID;
 
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "task")
 public class TaskModel extends ListenerDate implements Serializable {
     @Serial
@@ -25,41 +32,20 @@ public class TaskModel extends ListenerDate implements Serializable {
     @Column(length = 300)
     private String taskDescription;
 
-    @Column(nullable = false, length = 36)
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user")
+    protected UserModel user;
+
+    @OneToMany(mappedBy = "task")
+    @JsonIgnore
+    protected List<SubTaskModel> subtasks;
 
 
-    // Getters and setters
-
-    public UUID getUserId() {
-        return userId;
+    public UserModel getUser() {
+        return user;
     }
 
-    public void setUserId(UUID user_id) {
-        this.userId = user_id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public void setTaskDescription(String describe_task) {
-        this.taskDescription = describe_task;
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }
