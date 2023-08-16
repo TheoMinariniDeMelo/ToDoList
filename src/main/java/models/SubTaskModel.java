@@ -12,21 +12,18 @@ import java.util.UUID;
 public class SubTaskModel extends ListenerDate implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+    protected UUID id;
     @Column(nullable = false, length = 50)
     protected String title;
 
     @Column(length = 300)
     protected String subTaskDescription;
 
-    @Column(length = 36, nullable = false)
-    @JoinColumn(name = "taskId")
-    private UUID taskId;
-
+    @ManyToOne
+    @JoinColumn(name = "task")
+    protected TaskModel task;
 
     public UUID getId() {
         return id;
@@ -48,12 +45,11 @@ public class SubTaskModel extends ListenerDate implements Serializable {
         this.subTaskDescription = subTaskDescription;
     }
 
-    public UUID getTaskId() {
-        return taskId;
+    public TaskModel getTask() {
+        return task;
     }
 
-    public void setTaskId(UUID taskId) {
-        this.taskId = taskId;
+    public void setTask(TaskModel task) {
+        this.task = task;
     }
-
 }
