@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.NoArgsConstructor;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
@@ -16,9 +18,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "User")
 @Getter
 @Setter
+@NoArgsConstructor
+@Table(schema = "User")
+
 public class UserModel extends ListenerDate implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,6 +44,7 @@ public class UserModel extends ListenerDate implements Serializable, UserDetails
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     protected List<TaskModel> tasks;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -70,4 +75,5 @@ public class UserModel extends ListenerDate implements Serializable, UserDetails
     public boolean isEnabled() {
         return true;
     }
+
 }
