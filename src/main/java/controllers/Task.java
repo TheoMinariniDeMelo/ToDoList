@@ -13,8 +13,10 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import services.DeleteMethods.Delete;
 import services.GetMethods.Get;
 import services.PostMethods.Post;
+import services.PutMethods.Put;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,13 +35,21 @@ public class Task {
     Post post;
     @Autowired
     Get get;
+    @Autowired
+    Delete delete;
+    @Autowired
+    Put put;
 
     @GetMapping("/{taskId}")
     public ResponseEntity<Object> getTaskById(@PathVariable(value = "taskId") UUID id) {
         try {
             Optional<TaskModel> task = get.findTaskById(id);
             task.orElseThrow(() -> new NotFoundRequestException("Task not found with the provided id"));
+
             task.get().add(linkTo(methodOn(User.class).getTasksForUser(task.get().getUser().getId())).withRel(IanaLinkRelations.COLLECTION));
+
+            task.get().getUser().add(linkTo(methodOn(User.class).getUserById(task.get().getUser().getId())).withSelfRel());
+
             return ResponseEntity.status(HttpStatus.OK).body(task);
         } catch (NotFoundRequestException error) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
@@ -52,6 +62,7 @@ public class Task {
         if (subtasks.isEmpty()) return ResponseEntity.badRequest().body("Not found subtasks");
         return ResponseEntity.status(HttpStatus.OK).body(subtasks);
     }
+
     @PostMapping("")
     public ResponseEntity<Object> postTaskController(@RequestBody @Valid TaskDTO taskDto) {
         try {
@@ -64,6 +75,17 @@ public class Task {
             return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
         } catch (PersistenceException error) {
             return ResponseEntity.badRequest().body(error.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteTaskController(@PathVariable(name = "id") UUID id) throws NotFoundRequestException {
+        try {
+            TaskModel task = Optional.of(get.findTaskById(id)).orElseThrow(() -> new NotFoundRequestException("Not found task by id provided")).get();
+            delete.deleteTask(task.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(task);
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
         }
     }
 }

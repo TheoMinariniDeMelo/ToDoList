@@ -4,6 +4,7 @@ import dto.UserDTO;
 import exceptions.NotFoundRequestException;
 import exceptions.PersistenceException;
 import jakarta.validation.Valid;
+import models.SubTaskModel;
 import models.TaskModel;
 import models.UserModel;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import services.DeleteMethods.Delete;
 import services.GetMethods.Get;
 import services.PostMethods.Post;
 
@@ -33,6 +35,8 @@ public class User {
     Get get;
     @Autowired
     Post post;
+    @Autowired
+    Delete delete;
 
     @PostMapping("")
     public ResponseEntity<Object> postUserController(@RequestBody @Valid UserDTO userDto) {
@@ -81,10 +85,24 @@ public class User {
             if (!get.existsById(id)) throw new NotFoundRequestException("User not found");
 
             List<TaskModel> tasks = get.findByUserId(id);
-            tasks.forEach(task -> task.add(linkTo(methodOn(Task.class).getTaskById(task.getId())).withSelfRel()));
+            tasks.forEach(task -> {
+                task.add(linkTo(methodOn(Task.class).getTaskById(task.getId())).withSelfRel());
+                task.getUser().add(linkTo(methodOn(User.class).getUserById(task.getUser().getId())).withSelfRel());
+            });
 
             return ResponseEntity.status(HttpStatus.OK).body(tasks);
         } catch (NotFoundRequestException error) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteTaskController(@PathVariable(name = "id") UUID id) throws NotFoundRequestException {
+        try {
+            UserModel user = Optional.of(get.findById(id)).orElseThrow(() -> new NotFoundRequestException("Not found task by id provided"));
+            delete.deleteTask(user.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
         }
     }

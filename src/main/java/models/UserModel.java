@@ -4,15 +4,22 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import listener.ListenerDate;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "User")
-public class UserModel extends ListenerDate implements Serializable {
+@Getter
+@Setter
+public class UserModel extends ListenerDate implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,43 +37,37 @@ public class UserModel extends ListenerDate implements Serializable {
     @Column(length = 100)
     protected String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     protected List<TaskModel> tasks;
 
-    public List<TaskModel> getTasks() {
-        return tasks;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
-    public void setTasks(List<TaskModel> tasks) {
-        this.tasks = tasks;
+    @Override
+    public String getUsername() {
+        return this.user;
     }
 
-    public UUID getId() {
-        return id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
     }
 
-    public String getUser() {
-        return user;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
