@@ -15,9 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-
 @NoArgsConstructor
-
 @Table(schema = "SubTask")
 public class SubTaskModel extends ListenerDate implements Serializable {
     @Serial

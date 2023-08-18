@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.AuthenticationDto;
 import dto.UserDTO;
 import exceptions.NotFoundRequestException;
 import exceptions.PersistenceException;
@@ -12,9 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import services.DeleteMethods.Delete;
 import services.GetMethods.Get;
+import services.PostMethods.BCrypt;
 import services.PostMethods.Post;
 
 import java.util.List;
@@ -30,6 +36,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(path = "/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class User {
+    @Autowired
+    protected AuthenticationManager authenticationManager;
 
     @Autowired
     Get get;
@@ -38,15 +46,22 @@ public class User {
     @Autowired
     Delete delete;
 
-    @PostMapping("")
+    @PostMapping("/login")
+    public ResponseEntity<Authentication> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
+        var token = new UsernamePasswordAuthenticationToken(authenticationDto.email(), authenticationDto.password());
+        return ResponseEntity.ok().body(this.authenticationManager.authenticate(token));
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<Object> postUserController(@RequestBody @Valid UserDTO userDto) {
         UserModel user = new UserModel();
         try {
             boolean emailExists = Objects.isNull(get.findByEmail(user.getEmail()));
-            if (!emailExists) {
-                throw new PersistenceException("The User already exist");
-            }
+            if (!emailExists) throw new PersistenceException("The User already exist");
+
             BeanUtils.copyProperties(userDto, user);
+
+            user.setPassword(BCrypt.Encoder(user.getPassword()));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(post.saveUser(user));
         } catch (PersistenceException error) {

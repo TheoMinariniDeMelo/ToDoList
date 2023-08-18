@@ -4,12 +4,9 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import listener.ListenerDate;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,8 +18,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(schema = "User")
-
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class UserModel extends ListenerDate implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,7 +29,7 @@ public class UserModel extends ListenerDate implements Serializable, UserDetails
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
 
-    @Column(length = 32)
+    @Column(length = 64)
     protected String password;
 
 
@@ -53,12 +51,12 @@ public class UserModel extends ListenerDate implements Serializable, UserDetails
 
     @Override
     public String getUsername() {
-        return this.user;
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -75,5 +73,6 @@ public class UserModel extends ListenerDate implements Serializable, UserDetails
     public boolean isEnabled() {
         return true;
     }
-
 }
+
+

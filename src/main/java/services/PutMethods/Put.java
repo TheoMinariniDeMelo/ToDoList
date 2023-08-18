@@ -4,10 +4,13 @@ import models.SubTaskModel;
 import models.TaskModel;
 import models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import services.JpaRepositoriesService;
 
 import java.util.UUID;
 
+
+@Service
 public class Put {
     @Autowired
     JpaRepositoriesService jpaRepositoriesService;
