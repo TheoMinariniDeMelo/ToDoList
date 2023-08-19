@@ -17,3 +17,5 @@ CMD ["java", "-jar", "/app.jar"]
 
 # Copie o arquivo JAR do seu aplicativo Spring Boot para o contêiner
 COPY target/maven-wrapper.jar /app.jar
+
+

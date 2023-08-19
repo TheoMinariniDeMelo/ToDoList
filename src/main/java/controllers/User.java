@@ -1,5 +1,6 @@
 package controllers;
 
+import configs.securityConfiguration.JwtService;
 import dto.AuthenticationDto;
 import dto.UserDTO;
 import exceptions.NotFoundRequestException;
@@ -45,6 +46,8 @@ public class User {
     Post post;
     @Autowired
     Delete delete;
+    @Autowired
+    JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<Authentication> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
@@ -62,6 +65,8 @@ public class User {
             BeanUtils.copyProperties(userDto, user);
 
             user.setPassword(BCrypt.Encoder(user.getPassword()));
+
+             jwtService.generateToken(user);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(post.saveUser(user));
         } catch (PersistenceException error) {

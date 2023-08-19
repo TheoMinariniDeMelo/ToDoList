@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public record UserDTO(
         @NotNull String user,
         @NotBlank String password,
-        @NotBlank String email,
-        @NotBlank LocalDateTime dataCreate,
-        @NotBlank LocalDateTime dataUpdate
-) {}
+        @NotBlank String email
+) {
+}

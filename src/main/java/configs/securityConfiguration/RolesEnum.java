@@ -2,7 +2,7 @@ package configs.securityConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-public enum RolesEnum  {
+public enum RolesEnum {
     USER(0);
 
     private int value;
@@ -20,9 +20,5 @@ public enum RolesEnum  {
             if (values.getValue() == value) return values;
         }
         throw new IllegalArgumentException("Illegal argument of enum");
-
-
-
-
     }
 }
