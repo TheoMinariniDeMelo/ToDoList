@@ -16,7 +16,7 @@ import java.time.ZoneOffset;
 @Service
 public class JwtServiceSecurity {
 
-    @Autowired(required = false)
+    @Autowired
     UserModel userModel;
 
     @Value("${spring.jwt.security-token}")

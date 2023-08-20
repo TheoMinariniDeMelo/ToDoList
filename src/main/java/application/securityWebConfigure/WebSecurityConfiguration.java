@@ -1,5 +1,6 @@
 package application.securityWebConfigure;
 
+import application.securityWebConfigure.doFIlters.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +25,7 @@ public class WebSecurityConfiguration {
                     authorization.anyRequest().permitAll();
                 })
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .build();
     }

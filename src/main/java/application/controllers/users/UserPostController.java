@@ -28,15 +28,15 @@ public class UserPostController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/session")
-    public ResponseEntity<UserModel> session(@RequestBody @Valid LoginDto login) {
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid LoginDto login) {
         try {
             UserModel userModel = get.findByEmail(login.email()).orElseThrow(ChangeSetPersister.NotFoundException::new);
             var usernamePassword = new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword());
             var auth = authenticationManager.authenticate(usernamePassword);
-            return ResponseEntity.ok().body(userModel);
+            return ResponseEntity.ok().body(auth);
         } catch (ChangeSetPersister.NotFoundException error) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
