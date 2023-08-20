@@ -1,0 +1,40 @@
+package application.controllers.tasks;
+
+import application.models.TaskModel;
+import org.springframework.data.domain.PageRequest;
+import application.repositories.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("tasks")
+public class TasksGetController {
+    @Autowired
+    TaskRepository taskRepository;
+
+    @GetMapping("")
+    protected ResponseEntity<List<TaskModel>> getTask(
+            @RequestParam(value = "user") UUID id,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "offSet", defaultValue = "0") int offSet
+    ) {
+        try {
+            List<TaskModel> task;
+            PageRequest pagination = PageRequest.of(page, offSet);
+            if (title == null) task = Optional.of(taskRepository.findByUserId(id, pagination))
+                    .orElseThrow(ChangeSetPersister.NotFoundException::new);
+            else
+                task = Optional.of(taskRepository.findByUserIdAndTitle(id, title, page, offSet)).orElseThrow(ChangeSetPersister.NotFoundException::new);
+            return ResponseEntity.ok().body(task);
+        } catch (ChangeSetPersister.NotFoundException error) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
