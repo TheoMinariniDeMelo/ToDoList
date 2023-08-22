@@ -24,20 +24,17 @@ public class UserPutController {
     private AuthenticationManager authenticationManager;
 
 
-    @PutMapping("/update/password")
-    protected ResponseEntity updateUser(@RequestBody @Valid UpdatePasswordDto updateDto) {
+    @PutMapping("/update?Password&User")
+    protected ResponseEntity<Object> updateUser(@RequestBody @Valid UpdatePasswordDto updateDto) {
         try {
             String email = ((UserModel) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
             var token = new UsernamePasswordAuthenticationToken(email, updateDto.password());
-
             authenticationManager.authenticate(token);
-
             UserModel userModel = get.findByEmail(email).get();
-
             userModel.setPassword(updateDto.passwordNew());
+            userModel.setUser(updateDto.user());
 
             put.putUser(userModel);
-            
             return ResponseEntity.ok().build();
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Credential incorrect");
