@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record SubTaskDto(
         @NotNull String title,
-        @NotNull String subTitle,
+        @NotNull String describe,
         @NotBlank UUID task
 ) {
 }

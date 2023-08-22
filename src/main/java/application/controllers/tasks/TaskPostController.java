@@ -30,11 +30,17 @@ public class TaskPostController {
     protected ResponseEntity<TaskModel> createTask(@RequestBody @Valid TaskDto taskDto) {
         try {
             UserModel userContext = SecurityContextUserHolder.securityUserHolder();
+
             UserModel user = get.findByEmail(userContext.getEmail()).orElseThrow(NotFoundDataException::new);
+
             TaskModel taskModel = new TaskModel();
+
             BeanUtils.copyProperties(taskDto, taskModel);
+
             taskModel.setUser(user);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(post.saveTask(taskModel));
+
         } catch (NotFoundDataException | PersistenceException error) {
             return ResponseEntity.notFound().build();
         }

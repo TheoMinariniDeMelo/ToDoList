@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public record TaskDto(
         @NotNull String title,
-        @NotNull String subTitle
+        @NotNull String describe
 ) {
 }

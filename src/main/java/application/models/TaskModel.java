@@ -31,7 +31,7 @@ public class TaskModel extends DataListener implements Serializable {
     protected String title;
 
     @Column(length = 50, nullable = false, updatable = true)
-    protected String subTitle;
+    protected String describe;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore

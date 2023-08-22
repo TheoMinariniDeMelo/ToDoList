@@ -30,7 +30,7 @@ public class SubModel extends DataListener implements Serializable {
     protected String title;
 
     @Column
-    protected String subTitle;
+    protected String describe;
 
     @ManyToOne
     @JoinColumn(name = "task", nullable = false)
