@@ -1,6 +1,8 @@
 package application.controllers.subTasks;
 
+import application.exceptions.NotFoundDataException;
 import application.models.SubModel;
+import application.services.controller.repositoriesByAspects.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +25,12 @@ public class SubTasksGetControllers {
         try {
             List<SubModel> task;
             if (title == null) {
-                task = Optional.of(get.findByTaskId(id)).orElseThrow(ChangeSetPersister.NotFoundException::new);
+                task = Optional.of(get.findByTaskId(id)).orElseThrow(NotFoundDataException::new);
             } else {
-                task = Optional.of(get.findByTaskIdAndTitleWithPagination(id, title, page, offset)).orElseThrow(ChangeSetPersister.NotFoundException::new);
+                task = Optional.of(get.findByTaskIdAndTitleWithPagination(id, title, page, offset)).orElseThrow(NotFoundDataException::new);
             }
             return ResponseEntity.ok().body(task);
-        } catch (ChangeSetPersister.NotFoundException error) {
+        } catch (NotFoundDataException error) {
             return ResponseEntity.notFound().build();
         }
     }

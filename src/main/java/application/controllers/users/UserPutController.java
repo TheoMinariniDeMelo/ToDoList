@@ -1,11 +1,12 @@
 package application.controllers.users;
 
-import application.dto.user.UpdateDto;
+import application.dto.user.UpdatePasswordDto;
 import application.models.UserModel;
 import application.services.controller.repositoriesByAspects.Get;
 import application.services.controller.repositoriesByAspects.Put;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,15 +24,23 @@ public class UserPutController {
     private AuthenticationManager authenticationManager;
 
 
-    @PutMapping("/update")
-    protected ResponseEntity updateUser(@RequestBody @Valid UpdateDto updateDto) {
+    @PutMapping("/update/password")
+    protected ResponseEntity updateUser(@RequestBody @Valid UpdatePasswordDto updateDto) {
         try {
             String email = ((UserModel) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
             var token = new UsernamePasswordAuthenticationToken(email, updateDto.password());
+
             authenticationManager.authenticate(token);
-            return null;
+
+            UserModel userModel = get.findByEmail(email).get();
+
+            userModel.setPassword(updateDto.passwordNew());
+
+            put.putUser(userModel);
+            
+            return ResponseEntity.ok().build();
         } catch (Exception error) {
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Credential incorrect");
         }
     }
 

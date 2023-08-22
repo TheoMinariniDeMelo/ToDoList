@@ -2,9 +2,9 @@ package application.services.controller.repositoriesByAspects;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import application.repositories.SubTaskRepository;
-import application.repositories.TaskRepository;
-import application.repositories.UserRepository;
+import application.models.repositories.SubTaskRepository;
+import application.models.repositories.TaskRepository;
+import application.models.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Getter

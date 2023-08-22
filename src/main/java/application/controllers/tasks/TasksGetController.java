@@ -1,10 +1,10 @@
 package application.controllers.tasks;
 
+import application.exceptions.NotFoundDataException;
 import application.models.TaskModel;
 import org.springframework.data.domain.PageRequest;
-import application.repositories.TaskRepository;
+import application.models.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +29,11 @@ public class TasksGetController {
             List<TaskModel> task;
             PageRequest pagination = PageRequest.of(page, offSet);
             if (title == null) task = Optional.of(taskRepository.findByUserId(id, pagination))
-                    .orElseThrow(ChangeSetPersister.NotFoundException::new);
+                    .orElseThrow(NotFoundDataException::new);
             else
-                task = Optional.of(taskRepository.findByUserIdAndTitle(id, title, page, offSet)).orElseThrow(ChangeSetPersister.NotFoundException::new);
+                task = Optional.of(taskRepository.findByUserIdAndTitle(id, title, page, offSet)).orElseThrow(NotFoundDataException::new);
             return ResponseEntity.ok().body(task);
-        } catch (ChangeSetPersister.NotFoundException error) {
+        } catch (NotFoundDataException error) {
             return ResponseEntity.notFound().build();
         }
     }

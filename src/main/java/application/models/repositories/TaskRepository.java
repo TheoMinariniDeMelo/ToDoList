@@ -1,4 +1,4 @@
-package application.repositories;
+package application.models.repositories;
 
 import application.models.TaskModel;
 import org.springframework.data.domain.PageRequest;
