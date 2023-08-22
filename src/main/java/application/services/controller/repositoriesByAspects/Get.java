@@ -1,8 +1,9 @@
-package application.services.controller;
+package application.services.controller.repositoriesByAspects;
 
 import application.models.SubModel;
 import application.models.TaskModel;
 import application.models.UserModel;
+import application.services.controller.repositoriesByAspects.JpaRepositoriesService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -52,5 +53,9 @@ public class Get {
 
     public List<SubModel> findByTaskIdAndTitleWithPagination(UUID id, String title, int limit, int offSet) {
         return jpaRepositoriesService.getSubTaskRepository().findByTaskIdAndTitleWithPagination(id, title, limit, offSet);
+    }
+
+    public List<SubModel> findByTaskId(UUID id) {
+        return jpaRepositoriesService.getSubTaskRepository().findByTaskId(id);
     }
 }

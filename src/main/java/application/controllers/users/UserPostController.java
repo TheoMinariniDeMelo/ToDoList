@@ -1,12 +1,13 @@
 package application.controllers.users;
 
 import application.models.UserModel;
+import application.services.security.JwtServiceSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import application.services.controller.Get;
-import application.services.controller.Post;
-import application.dto.LoginDto;
-import application.dto.RegisterDto;
+import application.services.controller.repositoriesByAspects.Get;
+import application.services.controller.repositoriesByAspects.Post;
+import application.dto.user.IoDto;
+import application.dto.user.RegisterDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import application.services.security.PasswordEncoderBASE64;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("account")
 public class UserPostController {
     @Autowired
     private Post post;
@@ -28,15 +29,19 @@ public class UserPostController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    JwtServiceSecurity jwtServiceSecurity;
+
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid LoginDto login) {
+    public ResponseEntity<Object> login(@RequestBody @Valid IoDto login) {
         try {
             UserModel userModel = get.findByEmail(login.email()).orElseThrow(ChangeSetPersister.NotFoundException::new);
-            var usernamePassword = new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword());
-            var auth = authenticationManager.authenticate(usernamePassword);
-            return ResponseEntity.ok().body(auth);
-        } catch (ChangeSetPersister.NotFoundException error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            var usernamePassword = new UsernamePasswordAuthenticationToken(userModel.getEmail(), login.password());
+            authenticationManager.authenticate(usernamePassword);
+            var token = jwtServiceSecurity.jwtGenerateToken(userModel);
+            return ResponseEntity.ok().body(token);
+        } catch (Throwable error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
         }
     }
 

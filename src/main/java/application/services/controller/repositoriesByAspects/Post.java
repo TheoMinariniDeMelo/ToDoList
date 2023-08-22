@@ -1,8 +1,9 @@
-package application.services.controller;
+package application.services.controller.repositoriesByAspects;
 
 import application.models.SubModel;
 import application.models.TaskModel;
 import application.models.UserModel;
+import application.services.controller.repositoriesByAspects.JpaRepositoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package application.services.controller;
+package application.services.controller.repositoriesByAspects;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

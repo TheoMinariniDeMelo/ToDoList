@@ -15,10 +15,6 @@ import java.time.ZoneOffset;
 
 @Service
 public class JwtServiceSecurity {
-
-    @Autowired
-    UserModel userModel;
-
     @Value("${spring.jwt.security-token}")
     protected String token;
 
@@ -26,11 +22,11 @@ public class JwtServiceSecurity {
         return Algorithm.HMAC256(token);
     }
 
-    public String jwtGenerateToken() {
+    public String jwtGenerateToken(UserModel user) {
         try {
             return JWT.create()
                     .withIssuer("api-list")
-                    .withSubject(userModel.getEmail())
+                    .withSubject(user.getEmail())
                     .withExpiresAt(getInstant())
                     .sign(setAlgorithm());
         } catch (JWTCreationException error) {
@@ -45,7 +41,6 @@ public class JwtServiceSecurity {
                     .build()
                     .verify(auth)
                     .getSubject();
-
         } catch (JWTVerificationException error) {
             return null;
         }

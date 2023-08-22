@@ -2,9 +2,8 @@ package application.controllers.subTasks;
 
 import application.models.SubModel;
 import application.models.TaskModel;
-import application.services.controller.Get;
-import application.services.controller.Post;
-import application.dto.SubModelDto;
+import application.services.controller.repositoriesByAspects.Post;
+import application.dto.subTask.SubTaskDto;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +25,7 @@ public class SubTasksPostControllers {
     Post post;
 
     @PostMapping("")
-    protected ResponseEntity<SubModel> createSubTask(@RequestBody @Valid SubModelDto subModelDto) {
+    protected ResponseEntity<SubModel> createSubTask(@RequestBody @Valid SubTaskDto subModelDto) {
         try {
             TaskModel taskModel = get.findTaskById(subModelDto.task()).orElseThrow(ChangeSetPersister.NotFoundException::new);
             SubModel subModel = new SubModel();

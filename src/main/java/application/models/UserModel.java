@@ -19,7 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id", callSuper = false)
+@EqualsAndHashCode(of = "email", callSuper = false)
 public class UserModel extends DataListener implements Serializable, UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
