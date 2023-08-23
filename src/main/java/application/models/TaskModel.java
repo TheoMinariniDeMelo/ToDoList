@@ -31,14 +31,25 @@ public class TaskModel extends DataListener implements Serializable {
     protected String title;
 
     @Column(length = 50, nullable = false, updatable = true)
-    protected String describe;
+    protected String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     protected UserModel user;
 
+    protected StateByTask state;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     protected List<SubModel> subTask;
+
+    @PrePersist
+    public void setStateDefault(){
+        state = StateByTask.fromValue(1);
+    }
+    public void setState(int stateValue) {
+        state = StateByTask.fromValue(stateValue);
+    }
+
 
 }

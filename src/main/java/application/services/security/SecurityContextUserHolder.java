@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface SecurityContextUserHolder {
     static UserModel securityUserHolder() {
-        return (UserModel) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return (UserModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     }
 }

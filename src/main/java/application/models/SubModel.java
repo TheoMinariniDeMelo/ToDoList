@@ -2,6 +2,7 @@ package application.models;
 
 
 import application.models.listener.DataListener;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,9 +31,21 @@ public class SubModel extends DataListener implements Serializable {
     protected String title;
 
     @Column
-    protected String describe;
+    protected String description;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "task", nullable = false)
     protected TaskModel task;
+
+    protected StateByTask state;
+
+    @PrePersist
+    public void setStateDefault() {
+        state = StateByTask.fromValue(1);
+    }
+
+    public void setState(int stateValue) {
+        state = StateByTask.fromValue(stateValue);
+    }
 }

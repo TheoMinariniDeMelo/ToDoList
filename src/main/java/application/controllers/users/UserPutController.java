@@ -24,16 +24,19 @@ public class UserPutController {
     private AuthenticationManager authenticationManager;
 
 
-    @PutMapping("/update?Password&User")
+    @PutMapping("/update")
     protected ResponseEntity<Object> updateUser(@RequestBody @Valid UpdatePasswordDto updateDto) {
         try {
             String email = ((UserModel) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
+
             var token = new UsernamePasswordAuthenticationToken(email, updateDto.password());
+
             authenticationManager.authenticate(token);
+
             UserModel userModel = get.findByEmail(email).get();
+
             userModel.setPassword(updateDto.passwordNew());
             userModel.setUser(updateDto.user());
-
             put.putUser(userModel);
             return ResponseEntity.ok().build();
         } catch (Exception error) {

@@ -2,6 +2,6 @@ package application.exceptions;
 
 public class NotFoundDataException extends RuntimeException {
     public NotFoundDataException() {
-        super();
+        super("Not found data");
     }
 }

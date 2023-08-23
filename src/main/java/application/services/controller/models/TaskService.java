@@ -29,7 +29,7 @@ public class TaskService {
     public TaskModel updateTaskTitleAndDescription(UUID taskId, String newTitle, String newDescription) {
         TaskModel task = get.findTaskById(taskId).orElseThrow(NotFoundDataException::new);
         task.setTitle(newTitle);
-        task.setDescribe(newDescription);
+        task.setDescription(newDescription);
         return post.saveTask(task);
     }
 
@@ -38,7 +38,7 @@ public class TaskService {
         if (optionalSubTask.isPresent()) {
             SubModel subTask = optionalSubTask.get();
             subTask.setTitle(newTitle);
-            subTask.setDescribe(newDescription);
+            subTask.setDescription(newDescription);
             return subTaskRepository.save(subTask);
         }
         return null;

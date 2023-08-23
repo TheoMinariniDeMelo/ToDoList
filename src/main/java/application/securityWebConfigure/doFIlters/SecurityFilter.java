@@ -29,16 +29,17 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = recoverToken(request);
         if (token != null) {
             String jwt = jwtServiceSecurity.jwtVerifyToken(token);
-            Optional<UserModel> userDetails = get.findByEmail(jwt);
+            UserModel userDetails = get.findByEmail(jwt).orElseThrow();
             var user = new UsernamePasswordAuthenticationToken(userDetails, null, null);
             SecurityContextHolder.getContext().setAuthentication(user);
         }
+        ;
         filterChain.doFilter(request, response);
     }
 
     protected String recoverToken(HttpServletRequest servletRequest) {
         var authorization = servletRequest.getHeader("Authorization");
         if (authorization == null) return null;
-        return authorization.replace("Bearer", "");
+        return authorization.replace("Bearer", "").replace(" ", "");
     }
 }

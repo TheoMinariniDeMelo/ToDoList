@@ -1,6 +1,8 @@
 package application.models.repositories;
 
 import application.models.SubModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,11 +13,8 @@ import java.util.UUID;
 
 @Repository
 public interface SubTaskRepository extends JpaRepository<SubModel, UUID> {
-    List<SubModel> findByTaskId(UUID id);
+    Page<SubModel> findByTaskId(UUID id, PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM sub_model s WHERE s.task.id = :id and s.title = like %:title%  ORDER BY s.id LIMIT :offset, :limit", nativeQuery = true)
-    List<SubModel> findByTaskIdAndTitleWithPagination(@Param(value = "id") UUID id,
-                                                      @Param(value = "title") String title,
-                                                      @Param("offset") Integer offset,
-                                                      @Param("limit") Integer limit);
+    @Query("SELECT t FROM TaskModel t WHERE t.user.id = :userId AND t.title LIKE %:title%")
+    Page<SubModel> findByTaskIdAndTitleWithPagination(UUID userId, String title, PageRequest pageRequest);
 }

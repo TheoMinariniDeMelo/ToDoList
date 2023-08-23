@@ -1,6 +1,7 @@
 package application.securityWebConfigure;
 
 import application.securityWebConfigure.doFIlters.SecurityFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -19,18 +20,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration {
+    @Autowired
+    SecurityFilter securityFilter;
+
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf().disable()
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorization -> {
-                    authorization.requestMatchers(HttpMethod.POST, "/users/login").permitAll();
-                    authorization.requestMatchers(HttpMethod.POST, "/users/register").permitAll();
+                    authorization.requestMatchers(HttpMethod.POST, "/account/login").permitAll();
+                    authorization.requestMatchers(HttpMethod.POST, "/account/register").permitAll();
                     authorization.anyRequest().authenticated();
                 })
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .build();
     }

@@ -3,7 +3,9 @@ package application.controllers.tasks;
 import application.exceptions.NotFoundDataException;
 import application.models.TaskModel;
 import application.models.UserModel;
+import application.services.controller.repositoriesByAspects.Get;
 import application.services.security.SecurityContextUserHolder;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import application.models.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +21,26 @@ import java.util.UUID;
 public class TasksGetController {
     @Autowired
     TaskRepository taskRepository;
+    @Autowired
+    Get get;
 
-    @GetMapping("")
-    protected ResponseEntity<List<TaskModel>> getTask(
+    @GetMapping("/source")
+    public ResponseEntity<Page<TaskModel>> getTask(
             @RequestParam(value = "title") String title,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "offSet", defaultValue = "0") int offSet
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
     ) {
         try {
-            List<TaskModel> task;
-            PageRequest pagination = PageRequest.of(page, offSet);
+            Page<TaskModel> task;
+            PageRequest pagination = PageRequest.of(page, pageSize); // Use pageSize instead of offSet
 
             UserModel userModel = SecurityContextUserHolder.securityUserHolder();
-
-            UUID id = userModel.getId();
-            if (title == null) task = Optional.of(taskRepository.findByUserId(id, pagination))
-                    .orElseThrow(NotFoundDataException::new);
+            UUID id = get.findByEmail(userModel.getEmail()).orElseThrow(NotFoundDataException::new).getId();
+            if (title == null)
+                task = get.findByUserId(id, pagination);
             else
-                task = Optional.of(taskRepository.findByUserIdAndTitle(id, title, page, offSet)).orElseThrow(NotFoundDataException::new);
+                task = get.findByUserIdAndTitleContaining(id, title, pagination);
+
             return ResponseEntity.ok().body(task);
         } catch (NotFoundDataException error) {
             return ResponseEntity.notFound().build();

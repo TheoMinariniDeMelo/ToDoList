@@ -14,11 +14,11 @@ public class TaskPutController {
     @Autowired
     TaskService taskService;
 
-    @PutMapping("/tasks/{taskId}")
+    @PutMapping("/tasks/update/{taskId}")
     public ResponseEntity<TaskModel> updateTask(
             @PathVariable UUID taskId,
-            @RequestParam String newTitle,
-            @RequestParam String newDescription) {
+            @RequestBody String newTitle,
+            @RequestBody String newDescription) {
         TaskModel updatedTask = taskService.updateTaskTitleAndDescription(taskId, newTitle, newDescription);
         if (updatedTask != null) {
             return ResponseEntity.ok(updatedTask);
