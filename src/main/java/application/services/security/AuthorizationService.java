@@ -1,6 +1,6 @@
 package application.services.security;
 
-import application.services.controller.repositoriesByAspects.Get;
+import application.models.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationService implements UserDetailsService {
     @Autowired
-    Get get;
+    UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return get.findByEmail(email).get();
+        return userRepository.findByEmail(email).get();
     }
 }

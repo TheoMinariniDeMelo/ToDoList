@@ -3,8 +3,7 @@ package application.controllers.users;
 
 import application.dto.user.DeleteDto;
 import application.models.UserModel;
-import application.services.controller.repositoriesByAspects.Delete;
-import application.services.controller.repositoriesByAspects.Get;
+import application.models.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("account")
 public class UserDeleteController {
     @Autowired
-    private Get get;
-    @Autowired
-    private Delete delete;
+    UserRepository userRepository;
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -32,7 +29,7 @@ public class UserDeleteController {
             String email = ((UserModel) SecurityContextHolder.getContext().getAuthentication().getDetails()).getEmail();
             var token = new UsernamePasswordAuthenticationToken(email, deleteDto.password());
             authenticationManager.authenticate(token);
-            delete.deleteUser(get.findByEmail(email).get());
+            userRepository.delete(userRepository.findByEmail(email).get());
             return ResponseEntity.ok().build();
         } catch (Exception error) {
             return ResponseEntity.badRequest().body(error.getMessage());

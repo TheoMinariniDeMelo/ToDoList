@@ -1,5 +1,6 @@
 package application.controllers.subTasks;
 
+import application.dto.subTask.UpdateTitleAndDescriptionDto;
 import application.models.SubModel;
 import application.models.UserModel;
 import application.services.controller.models.TaskService;
@@ -16,12 +17,11 @@ public class SubTasksPutControllers {
     @Autowired
     TaskService taskService;
 
-    @PutMapping("/subtasks/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SubModel> updateSubTask(
             @PathVariable(value = "id") UUID subTaskId,
-            @RequestBody String newTitle,
-            @RequestBody String newDescription) {
-        SubModel updatedSubTask = taskService.updateSubTaskTitleAndDescription(subTaskId, newTitle, newDescription);
+            @RequestBody UpdateTitleAndDescriptionDto updateTitleAndDescriptionDto) {
+        SubModel updatedSubTask = taskService.updateSubTaskTitleAndDescription(subTaskId, updateTitleAndDescriptionDto.title(), updateTitleAndDescriptionDto.description());
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         ;
         if (updatedSubTask != null) {
@@ -30,7 +30,7 @@ public class SubTasksPutControllers {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/subtasks/update/{subTaskId}/move")
+    @PutMapping("/{subTaskId}/move")
     public ResponseEntity<SubModel> moveSubTask(
             @PathVariable UUID subTaskId,
             @RequestParam(value = "task") UUID newTaskId) {

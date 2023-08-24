@@ -3,10 +3,7 @@ package application.models;
 import application.models.listener.DataListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -44,9 +41,10 @@ public class TaskModel extends DataListener implements Serializable {
     protected List<SubModel> subTask;
 
     @PrePersist
-    public void setStateDefault(){
+    public void setStateDefault() {
         state = StateByTask.fromValue(1);
     }
+
     public void setState(int stateValue) {
         state = StateByTask.fromValue(stateValue);
     }

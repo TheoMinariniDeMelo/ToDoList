@@ -2,11 +2,10 @@ package application.controllers.tasks;
 
 import application.exceptions.IncorrectCredentials;
 import application.exceptions.NotFoundDataException;
-import application.models.SubModel;
 import application.models.TaskModel;
 import application.models.UserModel;
-import application.services.controller.repositoriesByAspects.Get;
-import application.services.controller.repositoriesByAspects.Post;
+import application.models.repositories.TaskRepository;
+import application.models.repositories.UserRepository;
 import application.dto.task.TaskDto;
 import application.services.security.SecurityContextUserHolder;
 import jakarta.persistence.PersistenceException;
@@ -24,16 +23,16 @@ import java.util.UUID;
 @RequestMapping("tasks")
 public class TaskPostController {
     @Autowired
-    Get get;
+    TaskRepository taskRepository;
     @Autowired
-    Post post;
+    UserRepository userRepository;
 
     @PostMapping("")
     protected ResponseEntity<Object> createTask(@RequestBody @Valid TaskDto taskDto) {
         try {
             UserModel userContext = SecurityContextUserHolder.securityUserHolder();
             System.out.println(SecurityContextUserHolder.securityUserHolder());
-            UserModel user = get.findByEmail(userContext.getEmail()).orElseThrow(NotFoundDataException::new);
+            UserModel user = userRepository.findByEmail(userContext.getEmail()).orElseThrow(NotFoundDataException::new);
 
             TaskModel taskModel = new TaskModel();
 
@@ -41,7 +40,7 @@ public class TaskPostController {
 
             taskModel.setUser(user);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(post.saveTask(taskModel));
+            return ResponseEntity.status(HttpStatus.CREATED).body(taskRepository.save(taskModel));
 
         } catch (NotFoundDataException | PersistenceException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
@@ -52,13 +51,13 @@ public class TaskPostController {
     protected ResponseEntity<TaskModel> doneTask(@RequestParam(value = "key") UUID id) {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
-            TaskModel taskModel = get.findTaskById(id).orElseThrow(NotFoundDataException::new);
+            TaskModel taskModel = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
             if (!Objects.equals(taskModel.getUser(), userModel)) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
             taskModel.setState(2);
-            return ResponseEntity.ok().body(post.saveTask(taskModel));
+            return ResponseEntity.ok().body(taskRepository.save(taskModel));
         } catch (NotFoundDataException | IllegalArgumentException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

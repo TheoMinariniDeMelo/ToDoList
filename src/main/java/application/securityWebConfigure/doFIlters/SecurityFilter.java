@@ -2,7 +2,7 @@ package application.securityWebConfigure.doFIlters;
 
 
 import application.models.UserModel;
-import application.services.controller.repositoriesByAspects.Get;
+import application.models.repositories.UserRepository;
 import application.services.security.JwtServiceSecurity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,14 +22,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     JwtServiceSecurity jwtServiceSecurity;
     @Autowired
-    Get get;
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoverToken(request);
         if (token != null) {
             String jwt = jwtServiceSecurity.jwtVerifyToken(token);
-            UserModel userDetails = get.findByEmail(jwt).orElseThrow();
+            UserModel userDetails = userRepository.findByEmail(jwt).orElseThrow();
             var user = new UsernamePasswordAuthenticationToken(userDetails, null, null);
             SecurityContextHolder.getContext().setAuthentication(user);
         }

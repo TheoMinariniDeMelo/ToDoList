@@ -46,6 +46,7 @@ public class UserModel extends DataListener implements Serializable, UserDetails
         return null;
     }
 
+
     @Override
     @JsonIgnore
     public String getUsername() {

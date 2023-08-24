@@ -4,9 +4,7 @@ import application.exceptions.IncorrectCredentials;
 import application.exceptions.NotFoundDataException;
 import application.models.TaskModel;
 import application.models.UserModel;
-import application.services.controller.repositoriesByAspects.Delete;
-import application.services.controller.repositoriesByAspects.Get;
-import application.services.controller.repositoriesByAspects.Post;
+import application.models.repositories.TaskRepository;
 import application.services.security.SecurityContextUserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,23 +22,19 @@ import java.util.UUID;
 @RequestMapping("tasks")
 public class TaskDeleteController {
     @Autowired
-    Delete delete;
-    @Autowired
-    Get get;
-    @Autowired
-    Post post;
+    TaskRepository taskRepository;
 
     @DeleteMapping("/deleted")
     protected ResponseEntity<TaskModel> deletedTask(@RequestParam(value = "key") UUID id) {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
-            TaskModel task = get.findTaskById(id).orElseThrow(NotFoundDataException::new);
+            TaskModel task = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
             if (Objects.equals(task.getUser(), userModel)) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
             task.setState(3);
-            return ResponseEntity.ok().body(post.saveTask(task));
+            return ResponseEntity.ok().body(taskRepository.save(task));
         } catch (NotFoundDataException | IllegalArgumentException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -50,12 +44,12 @@ public class TaskDeleteController {
     protected ResponseEntity<TaskModel> deleteTask(@RequestParam(value = "key") UUID id) {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
-            TaskModel task = get.findTaskById(id).orElseThrow(NotFoundDataException::new);
+            TaskModel task = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
             if (Objects.equals(task.getUser(), userModel)) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
-            delete.deleteTask(task);
+            taskRepository.delete(task);
             return ResponseEntity.ok().build();
         } catch (NotFoundDataException | IllegalArgumentException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record SubTaskDto(
+public record CreateDto(
         @NotNull String title,
         @NotNull String description,
         @NotBlank UUID task

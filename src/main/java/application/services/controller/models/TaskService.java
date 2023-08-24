@@ -5,10 +5,7 @@ import application.models.SubModel;
 import application.models.TaskModel;
 import application.models.repositories.SubTaskRepository;
 import application.models.repositories.TaskRepository;
-import application.services.controller.repositoriesByAspects.Get;
-import application.services.controller.repositoriesByAspects.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,20 +18,16 @@ public class TaskService {
 
     @Autowired
     private SubTaskRepository subTaskRepository;
-    @Autowired
-    Get get;
-    @Autowired
-    Post post;
 
     public TaskModel updateTaskTitleAndDescription(UUID taskId, String newTitle, String newDescription) {
-        TaskModel task = get.findTaskById(taskId).orElseThrow(NotFoundDataException::new);
+        TaskModel task = taskRepository.findById(taskId).orElseThrow(NotFoundDataException::new);
         task.setTitle(newTitle);
         task.setDescription(newDescription);
-        return post.saveTask(task);
+        return taskRepository.save(task);
     }
 
     public SubModel updateSubTaskTitleAndDescription(UUID subTaskId, String newTitle, String newDescription) {
-        Optional<SubModel> optionalSubTask = get.findSubTaskById(subTaskId);
+        Optional<SubModel> optionalSubTask = subTaskRepository.findById(subTaskId);
         if (optionalSubTask.isPresent()) {
             SubModel subTask = optionalSubTask.get();
             subTask.setTitle(newTitle);
@@ -45,15 +38,15 @@ public class TaskService {
     }
 
     public SubModel moveSubTaskToNewTask(UUID subTaskId, UUID newTaskId) {
-        Optional<SubModel> optionalSubTask = get.findSubTaskById(subTaskId);
-        Optional<TaskModel> optionalNewTask = get.findTaskById(newTaskId);
+        Optional<SubModel> optionalSubTask = subTaskRepository.findById(subTaskId);
+        Optional<TaskModel> optionalNewTask = taskRepository.findById(newTaskId);
 
         if (optionalSubTask.isPresent() && optionalNewTask.isPresent()) {
             SubModel subTask = optionalSubTask.get();
             TaskModel newTask = optionalNewTask.get();
 
             subTask.setTask(newTask);
-            return post.saveSubTask(subTask);
+            return subTaskRepository.save(subTask);
         }
         return null;
     }

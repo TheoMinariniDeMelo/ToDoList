@@ -6,9 +6,7 @@ import application.exceptions.NotFoundDataException;
 import application.models.SubModel;
 import application.models.TaskModel;
 import application.models.UserModel;
-import application.services.controller.repositoriesByAspects.Delete;
-import application.services.controller.repositoriesByAspects.Get;
-import application.services.controller.repositoriesByAspects.Post;
+import application.models.repositories.SubTaskRepository;
 import application.services.security.SecurityContextUserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,23 +23,20 @@ import java.util.UUID;
 @RequestMapping("/subTasks")
 public class SubTasksDeleteControllers {
     @Autowired
-    Get get;
-    @Autowired
-    Post post;
-    @Autowired
-    Delete delete;
+    SubTaskRepository subTaskRepository;
+
 
     @DeleteMapping("/deleted")
     protected ResponseEntity<SubModel> deletedSubTask(@RequestParam(value = "key") UUID id) {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
-            SubModel subtask = get.findSubTaskById(id).orElseThrow(NotFoundDataException::new);
+            SubModel subtask = subTaskRepository.findById(id).orElseThrow(NotFoundDataException::new);
             if (Objects.equals(subtask.getTask().getUser(), userModel)) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
             subtask.setState(3);
-            return ResponseEntity.ok().body(post.saveSubTask(subtask));
+            return ResponseEntity.ok().body(subTaskRepository.save(subtask));
         } catch (NotFoundDataException | IllegalArgumentException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -51,14 +46,14 @@ public class SubTasksDeleteControllers {
     protected ResponseEntity<TaskModel> deleteSubTask(@RequestParam(value = "key") UUID id) {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
-            SubModel subtask = get.findSubTaskById(id).orElseThrow(NotFoundDataException::new);
+            SubModel subtask = subTaskRepository.findById(id).orElseThrow(NotFoundDataException::new);
             if (Objects.equals(subtask.getTask().getUser(), userModel)) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
-            delete.deleteSubTask(subtask);
+            subTaskRepository.delete(subtask);
             return ResponseEntity.ok().build();
-        } catch (NotFoundDataException | IllegalArgumentException exception) {
+        } catch (NotFoundDataException | IllegalArgumentException | IncorrectCredentials exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
