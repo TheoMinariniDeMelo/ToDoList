@@ -29,13 +29,13 @@ public class TaskDeleteController {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
             TaskModel task = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (Objects.equals(task.getUser(), userModel)) {
+            if (!Objects.equals(task.getUser().getEmail(), userModel.getEmail())) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
             task.setState(3);
             return ResponseEntity.ok().body(taskRepository.save(task));
-        } catch (NotFoundDataException | IllegalArgumentException exception) {
+        } catch (NotFoundDataException | IllegalArgumentException | IncorrectCredentials Ilexception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -45,7 +45,7 @@ public class TaskDeleteController {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
             TaskModel task = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (Objects.equals(task.getUser(), userModel)) {
+            if (!Objects.equals(task.getUser().getEmail(), userModel.getEmail())) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;

@@ -52,7 +52,7 @@ public class TaskPostController {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
             TaskModel taskModel = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (!Objects.equals(taskModel.getUser(), userModel)) {
+            if (!Objects.equals(taskModel.getUser().getEmail(), userModel.getEmail())) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;

@@ -1,4 +1,4 @@
-package application.dto.subTask;
+package application.dto.task;
 
 import jakarta.validation.constraints.NotNull;
 

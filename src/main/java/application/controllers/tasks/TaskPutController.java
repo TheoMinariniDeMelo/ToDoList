@@ -1,7 +1,9 @@
 package application.controllers.tasks;
 
+import application.dto.task.UpdateTitleAndDescriptionDto;
 import application.models.TaskModel;
 import application.services.controller.models.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +16,11 @@ public class TaskPutController {
     @Autowired
     TaskService taskService;
 
-    @PutMapping("/tasks/update/{taskId}")
+    @PutMapping("/{taskId}")
     public ResponseEntity<TaskModel> updateTask(
             @PathVariable UUID taskId,
-            @RequestBody String newTitle,
-            @RequestBody String newDescription) {
-        TaskModel updatedTask = taskService.updateTaskTitleAndDescription(taskId, newTitle, newDescription);
+            @RequestBody @Valid UpdateTitleAndDescriptionDto updateTitleAndDescriptionDto) {
+        TaskModel updatedTask = taskService.updateTaskTitleAndDescription(taskId, updateTitleAndDescriptionDto.title(), updateTitleAndDescriptionDto.description());
         if (updatedTask != null) {
             return ResponseEntity.ok(updatedTask);
         }

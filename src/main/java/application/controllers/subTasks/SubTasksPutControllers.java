@@ -1,10 +1,11 @@
 package application.controllers.subTasks;
 
-import application.dto.subTask.UpdateTitleAndDescriptionDto;
+import application.dto.task.UpdateTitleAndDescriptionDto;
 import application.models.SubModel;
 import application.models.UserModel;
 import application.services.controller.models.TaskService;
 import application.services.security.SecurityContextUserHolder;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class SubTasksPutControllers {
     @PutMapping("/{id}")
     public ResponseEntity<SubModel> updateSubTask(
             @PathVariable(value = "id") UUID subTaskId,
-            @RequestBody UpdateTitleAndDescriptionDto updateTitleAndDescriptionDto) {
+            @RequestBody @Valid UpdateTitleAndDescriptionDto updateTitleAndDescriptionDto) {
         SubModel updatedSubTask = taskService.updateSubTaskTitleAndDescription(subTaskId, updateTitleAndDescriptionDto.title(), updateTitleAndDescriptionDto.description());
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         ;

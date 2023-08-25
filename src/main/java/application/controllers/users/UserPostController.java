@@ -53,7 +53,7 @@ public class UserPostController {
             UserModel user = new UserModel();
             BeanUtils.copyProperties(register, user);
             user.setPassword(PasswordEncoderBASE64.passwordEncoder(user.getPassword()));
-            return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
         }
