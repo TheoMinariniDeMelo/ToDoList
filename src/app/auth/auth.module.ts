@@ -13,12 +13,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { LogoComponent } from '../logo/logo.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AuthorizationComponent,
     RegisterComponent,
-    LogoComponent
+    LogoComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,

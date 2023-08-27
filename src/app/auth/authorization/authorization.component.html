@@ -1,8 +1,8 @@
-<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
+<!--<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
     <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
     <header>
         <app-logo></app-logo>
-        <h1>L I S T E N E R</h1>
+        <h1 class="title">LISTENER</h1>
     </header>
         <span class="p-float-label">
     
@@ -19,4 +19,26 @@
 
     <button mat-raised-button color="primary">Send</button>
 </form>
+</div>
+<!-->
+
+<div class="container p-bg-cyan-50" [formGroup]="mommentForm">
+    <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
+        <app-header></app-header>
+        <fieldset>
+            <div>
+                <span class="p-float-label">
+                    <input pInputText id="username" formControlName="username" pTooltip="Set username" />
+                    <label htmlFor="username">Username</label>
+                </span>
+            </div>
+            <div>
+                <span class="p-float-label">
+                    <p-password formGroupName="password" pTooltip="Set password"></p-password>
+                    <label htmlFor="password">Password</label>
+                </span>
+            </div>
+            <button mat-raised-button color="primary" id="login-button">Login</button>
+        </fieldset>
+    </form>
 </div>

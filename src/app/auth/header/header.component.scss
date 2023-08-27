@@ -1,0 +1,14 @@
+header { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title { 
+    letter-spacing: 0.3em;
+}
+
+.title::selection {
+    color: #f78989;
+}
