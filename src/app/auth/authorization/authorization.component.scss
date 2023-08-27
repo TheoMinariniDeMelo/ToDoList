@@ -1,0 +1,56 @@
+$magin: 20px;
+
+div.container {
+  display: grid;
+  place-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #2c2b2b, #242020);
+  color: rgb(49, 41, 41);
+  background-size: cover;
+  
+}
+
+
+span {
+  margin-bottom: $magin;
+}
+header{
+  text-align:center;
+  line-height: 10px;
+}
+
+
+form {
+  width: 40vw;
+  height: 72vh;
+  border-radius: 10px;
+  display: grid;
+  place-content: center;
+  border-radius: 2px;
+  background-color: #ffff;
+  box-shadow: 2px 2px 7px #2a2929;
+}
+button{
+    margin-top: $magin;
+}
+
+@media (max-width: 700px) {
+  form {
+    width:60vw;
+    input {
+      height: 50px;
+    }
+  }
+}
+@media screen and (max-width: 400px) {
+  form{
+    width: 90vw;
+  }
+}
+@media screen and (min-width: 700px) {
+  form{
+    width: 40vw;
+  }
+  
+}

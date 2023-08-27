@@ -1,0 +1,22 @@
+<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
+    <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
+    <header>
+        <app-logo></app-logo>
+        <h1>L I S T E N E R</h1>
+    </header>
+        <span class="p-float-label">
+    
+        <input pInputText id="username" formControlName="username" pTooltip="Add username" />
+    
+        <label htmlFor="username">username</label>
+    </span>
+    <span class="p-float-label">
+    
+        <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
+    
+        <label htmlFor="password">password</label>
+    </span>
+
+    <button mat-raised-button color="primary">Send</button>
+</form>
+</div>
