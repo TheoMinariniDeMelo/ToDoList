@@ -18,13 +18,13 @@
         <label htmlFor="email">email</label>
     </span>
 
-    <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
+    <p-password  formGroupName="password" pTooltip="Inserir senha"></p-password>
     <p-confirmDialog [style]="{width: '50vw'}"     
         id="dialog" 
         message="Você confima as credenciais?" 
         header="Se confirmar sera redirecionado para a página de login" 
         icon="pi pi-exclamation-triangle">
     </p-confirmDialog>
-    <button mat-raised-button color="primary" (click) = "confirm()">Enviar</button>
+    <button mat-raised-button color="primary"  (click) = "confirm()">Enviar</button>
 </form>
 </div>
