@@ -2,8 +2,9 @@ import {  NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationComponent } from './auth/authorization/authorization.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-const routes: Routes = [
+const appRoutes: Routes = [
   {
     path: "login",
     component: AuthorizationComponent
@@ -17,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

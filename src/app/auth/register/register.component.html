@@ -1,4 +1,4 @@
-<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
+<div class="container p-bg-cyan-50" >
     <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
     <header>
         <app-logo></app-logo>
@@ -13,10 +13,13 @@
     
     <span class="p-float-label">
     
-        <input pInputText id="email"formControlName="email" pTooltip="Adicionar email" />
-    
-        <label htmlFor="email">email</label>
+        <input pInputText type="email" id="email" formControlName="email"
+        [class.ng-invalid]="email?.invalid"
+        [class.ng-dirty]="email?.dirty && (email?.errors?.['required'] || email?.invalid)"
+        pTooltip="Adicionar email" />    
+        <label htmlFor="usuario">nome</label>
     </span>
+   
 
     <span class="p-float-label">
     

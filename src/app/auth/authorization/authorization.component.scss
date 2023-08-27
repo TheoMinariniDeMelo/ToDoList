@@ -1,4 +1,4 @@
-$magin: 20px;
+$margin: 20px;
 
 div.container {
   display: grid;
@@ -13,7 +13,7 @@ div.container {
 
 
 span {
-  margin-bottom: $magin;
+  margin-bottom: $margin;
 }
 header{
   text-align:center;
@@ -32,7 +32,7 @@ form {
   box-shadow: 2px 2px 7px #2a2929;
 }
 button{
-    margin-top: $magin;
+    margin-top: $margin;
 }
 
 @media (max-width: 700px) {
