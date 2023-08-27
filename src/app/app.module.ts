@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,10 +17,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     InputTextModule,
     BrowserAnimationsModule,
-    AuthModule
+    AuthModule,
+    ConfirmDialogModule
   ],
   providers: [
     BrowserAnimationsModule,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

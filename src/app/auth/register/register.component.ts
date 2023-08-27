@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmDialogServiceRegister } from './confirm-dialog.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -12,12 +11,17 @@ export class RegisterComponent implements OnInit {
 
   protected mommentForm!: FormGroup;
 
+
+
   ngOnInit():void{
     this.mommentForm = new FormGroup({
       user: new FormControl("user", [Validators.required]),
-      eMail: new FormControl("email",[Validators.required, Validators.email,Validators.maxLength(64)]),
+      email: new FormControl("",[Validators.required, Validators.email,Validators.maxLength(64)]),
       password: new FormControl("password", [Validators.required])
     })
+  }
+  get email(){
+    return this.mommentForm.get("email")
   }
 
   constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister){};
