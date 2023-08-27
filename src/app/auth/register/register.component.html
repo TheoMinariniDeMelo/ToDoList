@@ -1,1 +1,30 @@
-<p>register works!</p>
+<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
+    <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
+    <header>
+        <app-logo></app-logo>
+        <h1>L I S T E N E R</h1>
+    </header>
+        <span class="p-float-label">
+    
+        <input pInputText id="user"formControlName="username" pTooltip="Adicionar nome de usuario" />
+    
+        <label htmlFor="usuario">nome</label>
+    </span>
+    
+    <span class="p-float-label">
+    
+        <input pInputText id="email"formControlName="email" pTooltip="Adicionar email" />
+    
+        <label htmlFor="email">email</label>
+    </span>
+
+    <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
+    <p-confirmDialog [style]="{width: '50vw'}"     
+        id="dialog" 
+        message="Você confima as credenciais?" 
+        header="Se confirmar sera redirecionado para a página de login" 
+        icon="pi pi-exclamation-triangle">
+    </p-confirmDialog>
+    <button mat-raised-button color="primary" (click) = "confirm()">Enviar</button>
+</form>
+</div>
