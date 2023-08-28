@@ -1,5 +1,6 @@
 package application.models.repositories;
 
+import application.models.StateByTask;
 import application.models.TaskModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskModel, UUID> {
-    Page<TaskModel> findByUserId(UUID id, PageRequest page);
+    Page<TaskModel> findByUserIdAndState(UUID id, StateByTask state, PageRequest page);
 
     Page<TaskModel> findByUserIdAndTitleContaining(UUID userId, String title, PageRequest pageRequest);
 }

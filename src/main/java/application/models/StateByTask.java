@@ -1,5 +1,8 @@
 package application.models;
 
+import lombok.Getter;
+
+@Getter
 public enum StateByTask {
     UNFULFILLED(1),
     DONE(2),

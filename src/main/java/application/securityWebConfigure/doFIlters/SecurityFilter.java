@@ -26,15 +26,31 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
+        response.setHeader("Access-Control-Expose-Headers", "Location");
+
         String token = recoverToken(request);
         if (token != null) {
-            String jwt = jwtServiceSecurity.jwtVerifyToken(token);
-            UserModel userDetails = userRepository.findByEmail(jwt).orElseThrow();
-            var user = new UsernamePasswordAuthenticationToken(userDetails, null, null);
-            SecurityContextHolder.getContext().setAuthentication(user);
+            try {
+                String jwt = jwtServiceSecurity.jwtVerifyToken(token);
+                UserModel userDetails = userRepository.findByEmail(jwt).orElseThrow();
+                var user = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+                SecurityContextHolder.getContext().setAuthentication(user);
+            } catch (Exception error) {
+                System.out.println("error");
+            }
         }
-        ;
-        filterChain.doFilter(request, response);
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+
+        } else {
+            filterChain.doFilter(request, response);
+        }
+
     }
 
     protected String recoverToken(HttpServletRequest servletRequest) {

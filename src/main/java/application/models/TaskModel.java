@@ -40,6 +40,12 @@ public class TaskModel extends DataListener implements Serializable {
     @JsonIgnore
     protected List<SubModel> subTask;
 
+    protected PriorityByTask priority;
+
+    public void setPriority(int value) {
+        priority = PriorityByTask.fromValue(value);
+    }
+
     @PrePersist
     public void setStateDefault() {
         state = StateByTask.fromValue(1);

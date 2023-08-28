@@ -31,7 +31,7 @@ public class SubTasksDeleteControllers {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
             SubModel subtask = subTaskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (Objects.equals(subtask.getTask().getUser(), userModel)) {
+            if (!Objects.equals(subtask.getTask().getUser().getEmail(), userModel.getEmail())) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;
@@ -47,7 +47,7 @@ public class SubTasksDeleteControllers {
         UserModel userModel = SecurityContextUserHolder.securityUserHolder();
         try {
             SubModel subtask = subTaskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (Objects.equals(subtask.getTask().getUser(), userModel)) {
+            if (!Objects.equals(subtask.getTask().getUser().getEmail(), userModel.getEmail())) {
                 throw new IncorrectCredentials("Incorrect Credentials");
             }
             ;

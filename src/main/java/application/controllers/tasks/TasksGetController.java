@@ -2,6 +2,7 @@ package application.controllers.tasks;
 
 import application.exceptions.IncorrectCredentials;
 import application.exceptions.NotFoundDataException;
+import application.models.StateByTask;
 import application.models.TaskModel;
 import application.models.UserModel;
 import application.models.repositories.TaskRepository;
@@ -27,6 +28,7 @@ public class TasksGetController {
     @GetMapping("/source/{id}")
     public ResponseEntity<TaskModel> geTaskById(
             @PathVariable(value = "id") UUID id
+
     ) {
         try {
             UserModel userModel = SecurityContextUserHolder.securityUserHolder();
@@ -42,7 +44,9 @@ public class TasksGetController {
     @GetMapping("/source")
     public ResponseEntity<Page<TaskModel>> getTasks(
             @RequestParam(value = "title") String title,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "page", defaultValue = "0") int page
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "state") int state
     ) {
         try {
             Page<TaskModel> task;
@@ -51,12 +55,12 @@ public class TasksGetController {
             UserModel userModel = SecurityContextUserHolder.securityUserHolder();
             UUID id = userRepository.findByEmail(userModel.getEmail()).orElseThrow(NotFoundDataException::new).getId();
             if (title == null)
-                task = taskRepository.findByUserId(id, pagination);
+                task = taskRepository.findByUserIdAndState(id, StateByTask.fromValue(state), pagination);
             else
                 task = taskRepository.findByUserIdAndTitleContaining(id, title, pagination);
 
             return ResponseEntity.ok().body(task);
-        } catch (NotFoundDataException error) {
+        } catch (Exception error) {
             return ResponseEntity.notFound().build();
         }
     }

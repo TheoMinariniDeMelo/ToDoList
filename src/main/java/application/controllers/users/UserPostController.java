@@ -4,12 +4,16 @@ import application.dto.user.IoDto;
 import application.dto.user.RegisterDto;
 import application.models.UserModel;
 import application.models.repositories.UserRepository;
+import application.services.controller.models.TokenHash;
 import application.services.security.JwtServiceSecurity;
 import application.services.security.PasswordEncoderBASE64;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +43,11 @@ public class UserPostController {
             var usernamePassword = new UsernamePasswordAuthenticationToken(userModel.getEmail(), login.password());
             authenticationManager.authenticate(usernamePassword);
             var token = jwtServiceSecurity.jwtGenerateToken(userModel);
-            return ResponseEntity.ok().body(token);
-        } catch (Throwable error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+            TokenHash tokenHash = new TokenHash();
+            tokenHash.setToken(token);
+            return ResponseEntity.ok().body(tokenHash);
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new TokenHash());
         }
     }
 
@@ -53,6 +59,7 @@ public class UserPostController {
             UserModel user = new UserModel();
             BeanUtils.copyProperties(register, user);
             user.setPassword(PasswordEncoderBASE64.passwordEncoder(user.getPassword()));
+            userRepository.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());

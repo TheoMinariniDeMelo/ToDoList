@@ -38,11 +38,12 @@ public class TaskPostController {
 
             BeanUtils.copyProperties(taskDto, taskModel);
 
+            taskModel.setPriority(taskDto.priority());
             taskModel.setUser(user);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(taskRepository.save(taskModel));
 
-        } catch (NotFoundDataException | PersistenceException error) {
+        } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
         }
     }

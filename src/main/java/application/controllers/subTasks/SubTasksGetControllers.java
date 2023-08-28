@@ -2,6 +2,7 @@ package application.controllers.subTasks;
 
 import application.exceptions.IncorrectCredentials;
 import application.exceptions.NotFoundDataException;
+import application.models.StateByTask;
 import application.models.SubModel;
 import application.models.repositories.SubTaskRepository;
 import application.models.repositories.TaskRepository;
@@ -25,8 +26,11 @@ public class SubTasksGetControllers {
     TaskRepository taskRepository;
 
     @GetMapping("/source")
-    protected ResponseEntity<Page<SubModel>> getSubTask(@RequestParam(value = "task") UUID id, @RequestParam(value = "title") String title,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "page", defaultValue = "0") int page
+    protected ResponseEntity<Page<SubModel>> getSubTask(@RequestParam(value = "task") UUID id,
+                                                        @RequestParam(value = "title") String title,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                        @RequestParam(value = "page", defaultValue = "0") int page,
+                                                        @RequestParam(value = "state", defaultValue = "1") int state
     ) {
         try {
             PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -35,12 +39,12 @@ public class SubTasksGetControllers {
                 throw new IncorrectCredentials("error");
             Page<SubModel> task;
             if (title == null) {
-                task = subTaskRepository.findByTaskId(id, pageRequest);
+                task = subTaskRepository.findByTaskIdAndState(id, StateByTask.fromValue(state), pageRequest);
             } else {
                 task = subTaskRepository.findByTaskIdAndTitleWithPagination(id, title, pageRequest);
             }
             return ResponseEntity.ok().body(task);
-        } catch (NotFoundDataException | IncorrectCredentials error) {
+        } catch (Exception error) {
             return ResponseEntity.notFound().build();
         }
     }
