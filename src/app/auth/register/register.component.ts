@@ -1,6 +1,8 @@
+import { RequestService } from './service/request.service';
+import { ConfirmDialogServiceRegister } from './service/confirm-dialog.service';
 import { Component, OnInit } from '@angular/core';
-import { ConfirmDialogServiceRegister } from './confirm-dialog.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -11,30 +13,38 @@ export class RegisterComponent implements OnInit {
 
   protected mommentForm!: FormGroup;
 
+  constructor(protected requestService:RequestService, protected confirmationServiceRegister: ConfirmDialogServiceRegister) { }
 
-
-  ngOnInit():void{
+  ngOnInit(): void {
     this.mommentForm = new FormGroup({
-      user: new FormControl("user", [Validators.required]),
-      email: new FormControl("",[Validators.required, Validators.email,Validators.maxLength(64)]),
-      password: new FormControl("password", [Validators.required])
+      user: new FormControl("", [Validators.required]),
+      email: new FormControl("", [Validators.required, Validators.email, Validators.maxLength(64)]),
+      password: new FormControl("", [Validators.required])
     })
   }
-  get email(){
-    return this.mommentForm.get("email")
+
+  get email() {
+    return this.mommentForm.get("email");
+  }
+  get user() {
+    return this.mommentForm.get("user");
+  }
+  get password() {
+    return this.mommentForm.get("password")
   }
 
-  constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister){};
-  onSubmit():void{
-      this.mommentForm
-    }
-  confirm(){
-    this.confirmationServiceRegister.confirmation(this.accept, this.reject)
+
+  confirm() {
+    this.confirmationServiceRegister.confirmation(this.accept, this.reject);
   }
-  accept(){
-    this.onSubmit()
+
+  accept = () => {
+    this.requestService.onSubmit(this.mommentForm);
+    this.email?.setValue("")
+    this.email?.setErrors(["invalid"])
   }
-  reject(){
-    console.log("no")
+
+  reject = () => {
+    return null
   }
 }
