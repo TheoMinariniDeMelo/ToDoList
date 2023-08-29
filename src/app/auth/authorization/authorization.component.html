@@ -1,22 +1,22 @@
-<div class="container p-bg-cyan-50" [formGroup]="mommentForm"  >
-    <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
-    <header>
-        <app-logo></app-logo>
-        <h1>L I S T E N E R</h1>
-    </header>
-        <span class="p-float-label">
-    
-        <input pInputText id="username" formControlName="username" pTooltip="Add username" />
-    
-        <label htmlFor="username">username</label>
-    </span>
-    <span class="p-float-label">
-    
-        <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
-    
-        <label htmlFor="password">password</label>
-    </span>
+<div class="container p-bg-cyan-50" [formGroup]="mommentForm">
+    <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
+        <app-header></app-header>
+        <fieldset>
+            <div>
+                <span class="p-float-label">
+                    <input pInputText id="email" formControlName="email" pTooltip="Set username" />
+                    <label htmlFor="email">E-mail</label>
+                </span>
+            </div>
+            <div>
+                <span class="p-float-label">
+                    <p-password formControlName ="password"  [toggleMask]="true"></p-password>
 
-    <button mat-raised-button color="primary">Send</button>
-</form>
+                    <label htmlFor="password">Password</label>
+                </span>
+            </div>
+            <button mat-raised-button color="primary"(click)="onSubmit()" id="login-button">Login</button>
+            <span>Don&apos;t have an account? <a [routerLink]="['/register']" routerLinkActive="router-link-active" >Create one</a></span>
+        </fieldset>
+    </form>
 </div>

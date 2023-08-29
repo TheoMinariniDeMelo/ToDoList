@@ -1,6 +1,7 @@
+import { ConfirmDialogServiceRegister } from './../register/service/confirm-dialog.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmDialogServiceRegister } from '../register/confirm-dialog.service';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-authorization',
@@ -12,13 +13,14 @@ export class AuthorizationComponent implements OnInit {
 
   ngOnInit():void{
     this.mommentForm = new FormGroup({
-      user: new FormControl("user", [Validators.required]),
-      password: new FormControl("password", [Validators.required])
+      email: new FormControl("", [Validators.required, Validators.email]),
+      password: new FormControl("", [Validators.required])
     })
   }
 
-  constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister){};
+  constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister, protected login:LoginService){}
   onSubmit():void{
-      this.mommentForm
+    console.table(this.mommentForm.value)
+      this.login.onSubmit(this.mommentForm);
     }
 }

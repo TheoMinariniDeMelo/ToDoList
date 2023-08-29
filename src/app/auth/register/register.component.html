@@ -1,39 +1,29 @@
-<div class="container p-bg-cyan-50" >
-    <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
-    <header>
-        <app-logo></app-logo>
-        <h1>L I S T E N E R</h1>
-    </header>
-        <span class="p-float-label">
-    
-        <input pInputText id="user"formControlName="username" pTooltip="Adicionar nome de usuario" />
-    
-        <label htmlFor="usuario">nome</label>
-    </span>
-    
-    <span class="p-float-label">
-    
+<div class="container p-bg-cyan-50">
+    <form [formGroup]="mommentForm" id="register-form" #formDir="ngForm">
+      <header>
+
+        <app-header></app-header>
+      </header>
+      <span class="p-float-label">
+        <input pInputText id="user" formControlName="user" pTooltip="Adicionar nome de usuario" />
+        <label htmlFor="user">User</label>
+      </span>
+      <span class="p-float-label">
         <input pInputText type="email" id="email" formControlName="email"
         [class.ng-invalid]="email?.invalid"
         [class.ng-dirty]="email?.dirty && (email?.errors?.['required'] || email?.invalid)"
         pTooltip="Adicionar email" />    
-        <label htmlFor="usuario">nome</label>
+        <label htmlFor="usuario">E-mail</label>
     </span>
    
 
     <span class="p-float-label">
-    
-        <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
-    
-        <label htmlFor="password">password</label>
-    </span>
+      <input pPassword [feedback]="true" id="password" formControlName="password" pTooltip="Inserir senha" />
+      <label htmlFor="password">Password</label>
+  </span>
 
-    <p-confirmDialog [style]="{width: '50vw'}"     
-        id="dialog" 
-        message="Você confima as credenciais?" 
-        header="Se confirmar sera redirecionado para a página de login" 
-        icon="pi pi-exclamation-triangle">
+    <p-confirmDialog [style]="{width: '50vw'}" id="dialog" >
     </p-confirmDialog>
-    <button mat-raised-button color="primary"  (click) = "confirm()">Enviar</button>
+    <button mat-raised-button color="primary" (click) = "confirm()">Register</button>
 </form>
 </div>
