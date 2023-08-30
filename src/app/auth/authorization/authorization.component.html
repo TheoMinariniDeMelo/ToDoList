@@ -1,20 +1,21 @@
 <div class="container p-bg-cyan-50" [formGroup]="mommentForm">
     <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
-        <app-header></app-header>
+        
         <fieldset>
             <div>
                 <span class="p-float-label">
-                    <input pInputText id="username" formControlName="user" pTooltip="Set username" autocomplete="off" />
-                    <label htmlFor="username">User</label>
+                    <input pInputText id="email" formControlName="email" pTooltip="Set username" />
+                    <label htmlFor="email">E-mail</label>
                 </span>
             </div>
             <div>
                 <span class="p-float-label">
-                    <p-password formGroupName="password" pTooltip="Set password"></p-password>
+                    <p-password formControlName ="password"  [toggleMask]="true"></p-password>
+
                     <label htmlFor="password">Password</label>
                 </span>
             </div>
-            <button mat-raised-button color="primary" id="login-button">Login</button>
+            <button mat-raised-button color="primary"(click)="onSubmit()" id="login-button">Login</button>
             <span>Don&apos;t have an account? <a [routerLink]="['/register']" routerLinkActive="router-link-active" >Create one</a></span>
         </fieldset>
     </form>

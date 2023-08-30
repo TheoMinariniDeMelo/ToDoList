@@ -1,15 +1,18 @@
-
-<div class="container p-bg-cyan-50">
-    <form [formGroup]="mommentForm" id="register-form" #formDir="ngForm">
-      <header>
-
-        <app-header></app-header>
-      </header>
-      <span class="p-float-label">
-        <input pInputText id="user" formControlName="user" pTooltip="Adicionar nome de usuario" />
-        <label htmlFor="user">User</label>
-      </span>
-      <span class="p-float-label">
+<div class="container p-bg-cyan-50" >
+    <form (submit)="onSubmit()" [formGroup]="mommentForm" #formDir = "ngForm" >
+    <header>
+        <app-logo></app-logo>
+        <h1>L I S T E N E R</h1>
+    </header>
+        <span class="p-float-label">
+    
+        <input pInputText id="user"formControlName="username" pTooltip="Adicionar nome de usuario" />
+    
+        <label htmlFor="usuario">nome</label>
+    </span>
+    
+    <span class="p-float-label">
+    
         <input pInputText type="email" id="email" formControlName="email"
         [class.ng-invalid]="email?.invalid"
         [class.ng-dirty]="email?.dirty && (email?.errors?.['required'] || email?.invalid)"
@@ -19,9 +22,11 @@
    
 
     <span class="p-float-label">
-      <input pPassword id="password" formControlName="password" pTooltip="Inserir senha" />
-      <label htmlFor="password">Password</label>
-  </span>
+    
+        <p-password formGroupName="password" pTooltip="Inserir senha"></p-password>
+    
+        <label htmlFor="password">password</label>
+    </span>
 
     <p-confirmDialog [style]="{width: '50vw'}" id="dialog" >
     </p-confirmDialog>

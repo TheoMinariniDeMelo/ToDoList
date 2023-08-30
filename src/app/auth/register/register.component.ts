@@ -1,7 +1,6 @@
-import { ConfirmDialogServiceRegister } from './service/confirm-dialog.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ConfirmDialogServiceRegister } from './service/confirm-dialog.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +11,6 @@ export class RegisterComponent implements OnInit {
 
   protected mommentForm!: FormGroup;
 
-  constructor(protected httpClient: HttpClient, protected confirmationServiceRegister: ConfirmDialogServiceRegister) { }
 
   ngOnInit(): void {
     this.mommentForm = new FormGroup({
@@ -32,26 +30,15 @@ export class RegisterComponent implements OnInit {
     return this.mommentForm.get("password")
   }
 
-  onSubmit(): void {
-    console.table(this.mommentForm.value)
-    if (this.mommentForm.valid) {
-      const header = new HttpHeaders({
-        'Content-Type': 'application/json'         
-      })
-      this.httpClient.post("http://localhost:8080/account/register", this.mommentForm.value,
-      {headers: header}
-      ).subscribe((response) => {
-        console.log(response);
-      });
+  constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister){}
+  onSubmit():void{
+      this.mommentForm
     }
+  confirm(){
+    this.confirmationServiceRegister.confirmation(this.accept, this.reject)
   }
-
-  confirm() {
-    this.confirmationServiceRegister.confirmation(this.accept, this.reject);
-  }
-
-  accept = () => {
-    this.onSubmit();
+  accept(){
+    this.onSubmit()
   }
 
   reject = () => {
