@@ -1,12 +1,11 @@
-
 <div class="container p-bg-cyan-50" [formGroup]="mommentForm">
     <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
         <app-header></app-header>
         <fieldset>
             <div>
                 <span class="p-float-label">
-                    <input pInputText id="username" formControlName="username" pTooltip="Set username" autocomplete="off" />
-                    <label htmlFor="username">Username</label>
+                    <input pInputText id="username" formControlName="user" pTooltip="Set username" autocomplete="off" />
+                    <label htmlFor="username">User</label>
                 </span>
             </div>
             <div>
@@ -16,7 +15,7 @@
                 </span>
             </div>
             <button mat-raised-button color="primary" id="login-button">Login</button>
-            <span>Don&apos;t have an account? <a href="/register">Create one</a></span>
+            <span>Don&apos;t have an account? <a [routerLink]="['/register']" routerLinkActive="router-link-active" >Create one</a></span>
         </fieldset>
     </form>
 </div>

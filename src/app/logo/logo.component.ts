@@ -2,9 +2,8 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-logo',
-  template: `
-    <img src="assets/image-removebg-preview.png" />
-  `,        
+  // eslint-disable-next-line @angular-eslint/template/alt-text
+  template: "<img src='assets/image-removebg-preview.png' />",        
   styles: [`
     img {
       width: 70px;
@@ -13,6 +12,5 @@ import { Component, Input } from '@angular/core';
 })
 export class LogoComponent {
   @Input() img = ''; // Valor padrão
-
   
 }
