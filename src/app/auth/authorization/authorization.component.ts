@@ -1,7 +1,7 @@
 import { ConfirmDialogServiceRegister } from './../register/service/confirm-dialog.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from './services/login.service';
+import { LoginService } from './service/login.service';
 
 @Component({
   selector: 'app-authorization',

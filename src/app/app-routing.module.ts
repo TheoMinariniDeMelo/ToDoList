@@ -1,19 +1,28 @@
+import { GuardService } from './guard/guard.service';
 import {  NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationComponent } from './auth/authorization/authorization.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
+import { HomeComponent } from './main/home/home.component';
 const appRoutes: Routes = [
   {
-    path: "login",
-    component: AuthorizationComponent
-  }
-  ,
-  {
-    path: "register",
-    component: RegisterComponent
-    
+    path: '',
+    canActivate: [GuardService], // Usar 'canActivate' para aplicar guarda ao roteamento
+    children: [
+      {
+        path: 'login',
+        component: AuthorizationComponent
+      },
+      {
+        path: 'register',
+        component: RegisterComponent
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
+    }
+      // Outras rotas filhas aqui, se necessário
+    ]
   }
 ];
 

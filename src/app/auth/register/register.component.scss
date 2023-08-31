@@ -18,8 +18,11 @@ span{
 
     background-color: $main-background-color;
 }
+input{
+    transform: scaleX(112%);
+}
 button{
-  width: 62%;
+  width: 70%;
 
 }
 #register-form { 
@@ -27,7 +30,7 @@ button{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    
     width: 30em;
     min-height: 30em;
 

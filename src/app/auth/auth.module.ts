@@ -15,12 +15,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LogoComponent } from '../logo/logo.component';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
+import { RequestService } from './register/service/request.service';
 @NgModule({
   declarations: [
     AuthorizationComponent,
     RegisterComponent,
     LogoComponent,
-    HeaderComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -34,8 +35,11 @@ import { HeaderComponent } from './header/header.component';
     MatButtonModule,
     ReactiveFormsModule,
     TooltipModule,
-    RouterModule
+    RouterModule,
   ]
-  
+  ,
+  providers:[
+    RequestService
+  ]
 })
 export class AuthModule { }
