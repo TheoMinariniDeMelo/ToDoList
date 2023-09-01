@@ -8,11 +8,13 @@ export const homeResolver: ResolveFn<boolean> = (route, state) => {
     })
 
     console.log("ok")
+
    Inject.get(HttpClient).get(`http://localhost:8000/tasks/
                   source?title=${route.paramMap.get("title") || ''}
                   &page=${route.paramMap.get("page") || ''}
                   &pageSize=${route.paramMap.get("pageSize") || ''}
                   &state=${route.paramMap.get("state") || ''}`, {headers: {'Content-Type': 'application/json'}})
+
     .subscribe((response: any)=>{
       if(response.status === 200){
         route.data = response

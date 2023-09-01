@@ -1,19 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
-  constructor(protected readonly router:Router, protected readonly activatedRouter:ActivatedRoute){
-    ""
+export class HomeComponent {
+  constructor(){
+    console.log('HomeComponent');
   }
-  ngOnInit(){
-   this.activatedRouter.data.subscribe(dados=>{
-      console.log(dados)
-    })
-  }
-
 }

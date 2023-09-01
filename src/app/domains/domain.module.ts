@@ -14,6 +14,7 @@ import { SPAModule } from './SPA/spa.module';
   ],
   providers: [
     RequestTasksService,
+
   ]
 })
 export class DomainModule{ }

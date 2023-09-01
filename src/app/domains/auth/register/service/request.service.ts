@@ -12,7 +12,7 @@ export class RequestService {
   }
   onSubmit(mommentForm: FormGroup): void{
    if(mommentForm.valid){
-     this.httpClient.post("http://localhost:8080/account/register", mommentForm.value).subscribe((response)=>{
+     this.httpClient.post("http://localhost:8000/account/register", mommentForm.value).subscribe((response)=>{
       response == null? this.route.navigate(['/login']) : null;
      })
   }

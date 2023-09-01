@@ -54,3 +54,10 @@ button{
     width: 15em;
     height: 3em;
 }
+
+@media screen and (max-width: 468px) {
+    #register-form { 
+        width: 100%;
+        height: 100%;
+    }
+}
