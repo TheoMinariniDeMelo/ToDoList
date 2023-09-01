@@ -8,20 +8,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
-import { LogoComponent } from '../logo/logo.component';
+import { LogoComponent } from '../SPA/logo/logo.component'; 
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
-
+import { RequestService } from './register/service/request.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
     AuthorizationComponent,
     RegisterComponent,
     LogoComponent,
-    HeaderComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -35,8 +35,11 @@ import { HeaderComponent } from './header/header.component';
     MatButtonModule,
     ReactiveFormsModule,
     TooltipModule,
-    RouterModule
+    RouterModule,
   ]
-  
+  ,
+  providers:[
+    RequestService
+  ]
 })
 export class AuthModule { }
