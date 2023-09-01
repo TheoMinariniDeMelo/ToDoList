@@ -1,5 +1,5 @@
 <div class="container p-bg-cyan-50" [formGroup]="mommentForm">
-    <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
+    <form id="auth-form" [formGroup]="mommentForm" #formDir="ngForm">
         <app-header></app-header>
         <fieldset>
             <div>
@@ -11,7 +11,6 @@
             <div>
                 <span class="p-float-label">
                     <p-password formControlName ="password"  [toggleMask]="true"></p-password>
-
                     <label htmlFor="password">Password</label>
                 </span>
             </div>
