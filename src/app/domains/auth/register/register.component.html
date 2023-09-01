@@ -25,6 +25,7 @@
 
     <p-confirmDialog [style]="{width: '50vw'}" id="dialog" >
     </p-confirmDialog>
-    <button mat-raised-button color="primary" (click) = "confirm()">Register</button>
+    <button mat-raised-button color="primary" (click) = "confirm()" id="register-button">Register</button>
+    <span>Already have an account? <a [routerLink]="['/login']" routerLinkActive="router-link-active" >Login</a></span>
 </form>
 </div>
