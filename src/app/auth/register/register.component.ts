@@ -1,6 +1,7 @@
+import { RequestService } from './service/request.service';
+import { ConfirmDialogServiceRegister } from './service/confirm-dialog.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmDialogServiceRegister } from './service/confirm-dialog.service';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,7 @@ export class RegisterComponent implements OnInit {
 
   protected mommentForm!: FormGroup;
 
+  constructor(protected requestService:RequestService, protected confirmationServiceRegister: ConfirmDialogServiceRegister) { }
 
   ngOnInit(): void {
     this.mommentForm = new FormGroup({
@@ -30,15 +32,15 @@ export class RegisterComponent implements OnInit {
     return this.mommentForm.get("password")
   }
 
-  constructor(protected confirmationServiceRegister: ConfirmDialogServiceRegister){}
-  onSubmit():void{
-      this.mommentForm
-    }
-  confirm(){
-    this.confirmationServiceRegister.confirmation(this.accept, this.reject)
+
+  confirm() {
+    this.confirmationServiceRegister.confirmation(this.accept, this.reject);
   }
-  accept(){
-    this.onSubmit()
+
+  accept = () => {
+    this.requestService.onSubmit(this.mommentForm);
+    this.email?.setValue("")
+    this.email?.setErrors(["invalid"])
   }
 
   reject = () => {

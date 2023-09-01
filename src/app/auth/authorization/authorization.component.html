@@ -1,16 +1,16 @@
 <div class="container p-bg-cyan-50" [formGroup]="mommentForm">
     <form id="auth-form" (submit)="onSubmit()" [formGroup]="mommentForm" #formDir="ngForm">
-        
+        <app-header></app-header>
         <fieldset>
             <div>
                 <span class="p-float-label">
-                    <input pInputText id="email" formControlName="email" pTooltip="Set username" />
+                    <input class="input-form" pInputText id="email" formControlName="email" pTooltip="Set username" />
                     <label htmlFor="email">E-mail</label>
                 </span>
             </div>
             <div>
                 <span class="p-float-label">
-                    <p-password formControlName ="password"  [toggleMask]="true"></p-password>
+                    <p-password class="input-form" formControlName="password" [toggleMask]="true" pTooltip="Set Password"></p-password>
 
                     <label htmlFor="password">Password</label>
                 </span>
