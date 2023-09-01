@@ -6,17 +6,21 @@ fieldset {
     border: 0;
 }
 span{
-  margin-top: 20px;
+  margin: 20px 0px;
 }
 .container { 
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 100vw;
     height: 100vh;
-
     background-color: $main-background-color;
+}
+input{
+    transform: scaleX(112%);
+}
+button{
+    width: 70%;
 }
 #auth-form { 
     display: flex;
@@ -24,10 +28,10 @@ span{
     justify-content: center;
     align-items: center;
     width: 30em;
-    height: 30em;
+    min-height: 30em;
+    padding: 2em;
     background-color: $secondary-background-color;
     box-shadow: 1px 2px 10px #868686;
-
     fieldset { 
         display: flex;
         flex-direction: column;

@@ -18,7 +18,7 @@ export class LoginService {
   ) {}
 
   onSubmit(loginForm: FormGroup): void {
-    this.httpClient.post<LoginResponse>("http://localhost:8080/account/login", loginForm.value)
+    this.httpClient.post<LoginResponse>("http://localhost:8000/account/login", loginForm.value)
       .subscribe(
         (response: LoginResponse) => {
           this.tokenService.hashStorageGenerator(response.token);
