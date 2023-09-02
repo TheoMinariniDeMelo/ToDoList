@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.Locale;
 @SpringBootApplication
+
 public class ListApplication {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);

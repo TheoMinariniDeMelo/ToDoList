@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "list"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "user"
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+  app:
+    depends_on:
+      - mysql
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: 
+    networks:
+      - backend
+    ports:
+      - 8000:8000
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "list"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "user"
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+networks:
+  backend:
+    driver: bridge

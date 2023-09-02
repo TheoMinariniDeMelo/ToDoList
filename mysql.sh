@@ -1,1 +1,1 @@
- docker run -d -p 3306:3306 --network  backend_todolist -it -e MYSQL_ROOT_PASSWORD=0000 -e MYSQL_DATABASE=list --name mysql mysql
+ docker run -d -p 3306:3306 --network backend_todolist -it  --name mysql-v1 mysql-v1
