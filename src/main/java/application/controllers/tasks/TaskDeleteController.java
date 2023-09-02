@@ -36,7 +36,7 @@ public class TaskDeleteController {
             task.setState(3);
             return ResponseEntity.ok().body(taskRepository.save(task));
         } catch (NotFoundDataException | IllegalArgumentException | IncorrectCredentials Ilexception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

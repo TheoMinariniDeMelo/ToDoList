@@ -24,6 +24,6 @@ public enum StateByTask {
                 return state;
             }
         }
-        throw new IllegalArgumentException("Invalid value for StateByTask: " + value);
+        return fromValue(1);
     }
 }

@@ -34,7 +34,6 @@ public class SubModel extends DataListener implements Serializable {
     protected String description;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "task", nullable = false)
     protected TaskModel task;
 

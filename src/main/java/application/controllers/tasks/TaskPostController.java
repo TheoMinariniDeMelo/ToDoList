@@ -44,23 +44,9 @@ public class TaskPostController {
             return ResponseEntity.status(HttpStatus.CREATED).body(taskRepository.save(taskModel));
 
         } catch (Exception error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.getMessage());
         }
     }
 
-    @PostMapping("/done")
-    protected ResponseEntity<TaskModel> doneTask(@RequestParam(value = "key") UUID id) {
-        UserModel userModel = SecurityContextUserHolder.securityUserHolder();
-        try {
-            TaskModel taskModel = taskRepository.findById(id).orElseThrow(NotFoundDataException::new);
-            if (!Objects.equals(taskModel.getUser().getEmail(), userModel.getEmail())) {
-                throw new IncorrectCredentials("Incorrect Credentials");
-            }
-            ;
-            taskModel.setState(2);
-            return ResponseEntity.ok().body(taskRepository.save(taskModel));
-        } catch (NotFoundDataException | IllegalArgumentException exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+
 }

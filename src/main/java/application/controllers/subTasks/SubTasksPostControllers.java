@@ -42,24 +42,9 @@ public class SubTasksPostControllers {
             subModel.setTask(task);
             return ResponseEntity.status(HttpStatus.CREATED).body(subTaskRepository.save(subModel));
         } catch (NotFoundDataException | PersistenceException error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
-    @PostMapping("/done")
-    protected ResponseEntity<SubModel> doneSubTask(@RequestParam(value = "key") UUID id) {
-        UserModel userModel = SecurityContextUserHolder.securityUserHolder();
-        try {
-            SubModel subtask = subTaskRepository.findById(id).orElseThrow(NotFoundDataException::new);
 
-            if (!Objects.equals(subtask.getTask().getUser(), userModel))
-                throw new IncorrectCredentials("Incorrect Credentials");
-
-            subtask.setState(2);
-
-            return ResponseEntity.ok().body(subTaskRepository.save(subtask));
-        } catch (NotFoundDataException | IllegalArgumentException exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
 }

@@ -44,13 +44,13 @@ public class TasksGetController {
     @GetMapping("/source")
     public ResponseEntity<Page<TaskModel>> getTasks(
             @RequestParam(value = "title") String title,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "state") int state
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "state", defaultValue = "1") int state
     ) {
         try {
             Page<TaskModel> task;
-            PageRequest pagination = PageRequest.of(pageSize, page); // Use pageSize instead of offSet
+            PageRequest pagination = PageRequest.of(page, pageSize); // Use pageSize instead of offSet
 
             UserModel userModel = SecurityContextUserHolder.securityUserHolder();
             UUID id = userRepository.findByEmail(userModel.getEmail()).orElseThrow(NotFoundDataException::new).getId();

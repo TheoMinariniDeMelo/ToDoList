@@ -38,7 +38,7 @@ public class SubTasksDeleteControllers {
             subtask.setState(3);
             return ResponseEntity.ok().body(subTaskRepository.save(subtask));
         } catch (NotFoundDataException | IllegalArgumentException exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -54,7 +54,7 @@ public class SubTasksDeleteControllers {
             subTaskRepository.delete(subtask);
             return ResponseEntity.ok().build();
         } catch (NotFoundDataException | IllegalArgumentException | IncorrectCredentials exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }

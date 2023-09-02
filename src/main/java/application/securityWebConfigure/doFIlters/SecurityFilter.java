@@ -41,7 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var user = new UsernamePasswordAuthenticationToken(userDetails, null, null);
                 SecurityContextHolder.getContext().setAuthentication(user);
             } catch (Exception error) {
-                System.out.println("error");
+                System.out.println("Not Found");
             }
         }
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {

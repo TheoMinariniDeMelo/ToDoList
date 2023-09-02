@@ -62,7 +62,7 @@ public class UserPostController {
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.getMessage());
         }
     }
 }
