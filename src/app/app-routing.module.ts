@@ -5,9 +5,15 @@ import { AuthorizationComponent } from './domains/auth/authorization/authorizati
 import { RegisterComponent } from './domains/auth/register/register.component';
 import { HomeComponent } from './domains/SPA/home/home.component';
 import { NotFoundComponent } from './domains/SPA/not-found/not-found.component'; 
-import { homeResolver } from './domains/SPA/home/home.resolver';
+import { HomeResolver } from './domains/SPA/home/home.resolver';
 
 const appRoutes: Routes = [ 
+      {
+        path: "", 
+        redirectTo: "/home",
+        pathMatch: "full"
+      },
+          
       {
         path: 'login',
         component: AuthorizationComponent
@@ -20,12 +26,12 @@ const appRoutes: Routes = [
         path: 'home',
         canActivate : [GuardService],
         component: HomeComponent,
-        resolve: {tasks: homeResolver}
-    },
-    {
-      path: '**',
-      component: NotFoundComponent
-    }
+        resolve: {tasks: HomeResolver}
+      },
+      {
+        path: '**',
+        component: NotFoundComponent
+      }
       // Outras rotas filhas aqui, se necessário
     ]
 

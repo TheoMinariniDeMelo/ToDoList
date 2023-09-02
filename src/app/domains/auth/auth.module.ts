@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { RequestService } from './register/service/request.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { LogoComponent } from '../logo/logo.component';
+import { LogoComponent } from '../../logo/logo.component';
 @NgModule({
   declarations: [
     AuthorizationComponent,

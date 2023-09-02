@@ -1,25 +1,40 @@
-import { HttpClient } from '@angular/common/http';
-import { Injector } from '@angular/core';
-import { ResolveFn } from '@angular/router';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { TokenService } from '../../providers/servicesForAuth/token.service';
 
-export const homeResolver: ResolveFn<boolean> = (route, state) => {
-  const Inject = Injector.create({
-      providers: [{provide: HttpClient}]
-    })
+@Injectable({
+  providedIn: 'root'
+})
+export class HomeResolver implements Resolve<any> {
+  constructor(private httpClient: HttpClient) {}
 
-    console.log("ok")
-
-   Inject.get(HttpClient).get(`http://localhost:8000/tasks/
-                  source?title=${route.paramMap.get("title") || ''}
-                  &page=${route.paramMap.get("page") || ''}
-                  &pageSize=${route.paramMap.get("pageSize") || ''}
-                  &state=${route.paramMap.get("state") || ''}`, {headers: {'Content-Type': 'application/json'}})
-
-    .subscribe((response: any)=>{
-      if(response.status === 200){
-        route.data = response
+  resolve(
+    route: ActivatedRouteSnapshot,
+  ): Observable<any> | boolean {
+    const title = route.paramMap.get('title') || '';
+    const page = route.paramMap.get('page') || '';
+    const pageSize = route.paramMap.get('pageSize') || '';
+    const stateParam = route.paramMap.get('state') || '';
+    const apiUrl = `http://localhost:8000/tasks/source?title=${title}&page=${page}&pageSize=${pageSize}&state=${stateParam}`;
+    
+    // Retorna um Observable que aguarda a conclusão da solicitação HTTP antes de retornar true.
+    return this.httpClient.get(apiUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${TokenService.getToken()?.replaceAll("\"","")}`
       }
-    })
-    console.table(route.data || "ok")
-    return true
-};
+    }).pipe(
+      switchMap(data => {
+        // A solicitação HTTP foi concluída. Agora você pode atribuir os dados ao route.data se necessário.
+        route.data = data;
+        // Retorna true para indicar que a resolução foi concluída com sucesso.
+        console.log(data)
+        return [true];
+      })
+    );
+  }
+}
